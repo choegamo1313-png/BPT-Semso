@@ -450,6 +450,28 @@
   .member-search-actions{display:flex;gap:10px;margin-top:18px;}
   .member-search-count{font-size:12.5px;color:var(--muted);margin-bottom:10px;font-weight:600;}
 
+  /* ---------- Semso claim entry — CID member lookup ---------- */
+  .claim-lookup-bar{display:flex;align-items:flex-end;gap:12px;flex-wrap:wrap;}
+  .claim-lookup-bar .bio-field{flex:1;min-width:220px;}
+  .claim-lookup-bar .btn-primary{height:41px;flex:none;}
+  .claim-lookup-result{
+    margin-top:14px;border-radius:10px;padding:12px 16px;
+    display:flex;align-items:center;gap:12px;font-size:13px;
+  }
+  .claim-lookup-result.empty{background:#fcfaf7;border:1.5px dashed var(--line);color:var(--muted);}
+  .claim-lookup-result.found{background:#e4f4e7;border:1.5px solid var(--green);}
+  .claim-lookup-result.notfound{background:#fbe6e6;border:1.5px solid #c0392b;color:#8a2b2b;}
+  .claim-lookup-avatar{
+    width:42px;height:42px;border-radius:50%;flex:none;overflow:hidden;
+    background:var(--maroon-900);color:var(--gold);
+    display:flex;align-items:center;justify-content:center;font-weight:800;font-size:15px;
+  }
+  .claim-lookup-avatar img{width:100%;height:100%;object-fit:cover;}
+  .claim-lookup-info .cl-name{font-weight:800;color:var(--maroon-900);font-size:13.5px;}
+  .claim-lookup-info .cl-sub{color:var(--muted);font-size:12px;margin-top:2px;}
+  .claim-lookup-result.notfound .cl-name{color:#c0392b;}
+  .claim-fields-disabled{opacity:.5;pointer-events:none;}
+
   .bio-dropzone{
     border:2px dashed var(--line);border-radius:12px;
     padding:28px 20px;text-align:center;cursor:pointer;
@@ -532,6 +554,66 @@
   @media (max-width:900px){ .mgmt-grid{grid-template-columns:repeat(2,1fr);} }
   @media (max-width:600px){ .mgmt-grid{grid-template-columns:1fr;} }
 
+  /* ===================== ADMINISTRATOR — photo gallery ===================== */
+  .photo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:18px;}
+  .photo-card{
+    background:#fcfaf7;border:1.5px solid var(--line);border-radius:12px;overflow:hidden;
+  }
+  .photo-card .pc-thumb{width:100%;height:130px;object-fit:cover;display:block;background:var(--line);}
+  .photo-card .pc-body{padding:10px 12px 12px;}
+  .photo-card .pc-caption{font-size:13px;font-weight:800;color:var(--ink);margin-bottom:2px;}
+  .photo-card .pc-meta{font-size:11.5px;color:var(--muted);margin-bottom:8px;}
+  @media (max-width:900px){ .photo-grid{grid-template-columns:repeat(2,1fr);} }
+  @media (max-width:600px){ .photo-grid{grid-template-columns:1fr;} }
+
+  /* ===================== ADMINISTRATOR — recipient type toggle ===================== */
+  .type-toggle{display:flex;gap:10px;margin-bottom:16px;}
+  .type-toggle label{
+    display:flex;align-items:center;gap:7px;
+    border:1.5px solid var(--line);border-radius:10px;
+    padding:9px 16px;font-size:13px;font-weight:700;color:var(--muted);
+    cursor:pointer;transition:border-color .12s,color .12s,background .12s;
+  }
+  .type-toggle input{accent-color:var(--maroon-800);}
+  .type-toggle label.on{border-color:var(--maroon-700);color:var(--maroon-900);background:#fdf1de;}
+
+  /* ===================== ADMINISTRATOR — credential password reveal ===================== */
+  .pw-cell{display:flex;align-items:center;gap:8px;font-family:'Courier New',monospace;letter-spacing:.5px;}
+  .pw-cell button{background:none;border:none;color:var(--muted);display:flex;padding:2px;}
+  .pw-cell button:hover{color:var(--maroon-700);}
+  .pill.revoked{background:#fbe6e6;color:#c0392b;}
+  .pill.inactive{background:var(--line);color:var(--muted);}
+
+  /* ===================== LOGIN — inline error ===================== */
+  .login-error{
+    display:none;background:#fbe6e6;color:#8a2b2b;border:1.5px solid #e3a5a5;
+    border-radius:10px;padding:10px 14px;font-size:12.5px;font-weight:600;
+    margin:0 0 16px;text-align:left;
+  }
+  .login-error.show{display:block;}
+
+  /* ===================== VISION & MISSION ===================== */
+  .vm-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+  .vm-card{
+    background:var(--paper);border-radius:14px;padding:22px;box-shadow:var(--shadow);
+    border-top:4px solid var(--gold);
+  }
+  .vm-card .vm-icon{
+    width:46px;height:46px;border-radius:50%;margin-bottom:12px;
+    background:linear-gradient(135deg,var(--maroon-800),var(--maroon-950));
+    color:var(--gold);display:flex;align-items:center;justify-content:center;
+  }
+  .vm-card .vm-icon svg{width:22px;height:22px;}
+  .vm-card h3{margin:0 0 8px;font-size:15px;color:var(--maroon-900);}
+  .vm-card p{margin:0;font-size:13.5px;line-height:1.7;color:var(--ink);white-space:pre-line;}
+  .vm-values{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,1fr);gap:10px;}
+  .vm-values li{
+    display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:var(--ink);
+    background:#fcfaf7;border:1.5px solid var(--line);border-radius:10px;padding:9px 12px;
+  }
+  .vm-values li svg{flex:none;color:var(--gold-dark);}
+  @media (max-width:800px){ .vm-grid, .vm-values{grid-template-columns:1fr;} }
+
   /* ---------- Upload/document panels reused across Forms & Semso ---------- */
   .upload-panel-title{font-size:12.5px;font-weight:800;color:var(--maroon-800);text-transform:uppercase;letter-spacing:.5px;margin:0 0 12px;}
   .btn-sm{
@@ -567,10 +649,22 @@
   .dd-item svg{width:15px;height:15px;flex:none;color:var(--maroon-800);}
   .dd-item.logout svg{color:#c0392b;}
 
-  .notif-dropdown{width:290px;}
-  .notif-item{padding:12px 16px;border-top:1px solid var(--line);font-size:12.8px;}
+  .notif-dropdown{width:300px;}
+  .notif-header-row{display:flex;align-items:center;justify-content:space-between;}
+  .notif-markall{font-size:11px;color:var(--gold);cursor:pointer;font-weight:700;text-decoration:underline;text-underline-offset:2px;}
+  .notif-markall:hover{opacity:0.85;}
+  .notif-list{max-height:320px;overflow-y:auto;}
+  .notif-item{padding:12px 16px;border-top:1px solid var(--line);font-size:12.8px;cursor:pointer;position:relative;transition:background .12s;}
+  .notif-item:hover{background:#fdf6ee;}
   .notif-item b{color:var(--maroon-900);}
   .notif-item .t{color:var(--muted);font-size:11px;margin-top:2px;}
+  .notif-item.unread{background:#fbf3e8;padding-left:22px;}
+  .notif-item.unread::before{
+    content:'';position:absolute;left:6px;top:18px;width:7px;height:7px;border-radius:50%;background:var(--maroon-800);
+  }
+  .notif-item.read{opacity:0.72;}
+  .notif-empty{padding:26px 16px;text-align:center;color:var(--muted);font-size:12.5px;}
+  .bell-badge.hidden{display:none;}
 
   /* Modal overlay */
   .overlay{
@@ -639,6 +733,8 @@
       <h1>BIKHAR PHENDAY TSHOKPA<br>MANAGEMENT SYSTEM</h1>
       <p class="subtitle">Sign in to your account</p>
 
+      <div class="login-error" id="loginError">Incorrect username or password. Please try again.</div>
+
       <div class="field">
         <div class="field-input">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg>
@@ -648,7 +744,7 @@
       <div class="field">
         <div class="field-input">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 018 0v3"/></svg>
-          <input id="password" type="password" placeholder="Password" value="••••••••">
+          <input id="password" type="password" placeholder="Password" value="admin123">
           <button type="button" onclick="togglePw()">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg>
           </button>
@@ -663,7 +759,7 @@
       </button>
       <p class="login-foot">Don't have an account? <a href="#">Contact Administrator</a></p>
     </div>
-    <p class="login-hint">Demo — any username/password logs you in.</p>
+    <p class="login-hint">Default administrator login — Username: <b>admin</b> &nbsp;/&nbsp; Password: <b>admin123</b></p>
   </div>
 </div>
 
@@ -695,29 +791,28 @@
       </div>
       <div class="bell-wrap" onclick="toggleDropdown('notifDD')">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 01-3.4 0"/></svg>
-        <span class="bell-badge">3</span>
+        <span class="bell-badge" id="bellBadge">0</span>
         <div class="dropdown notif-dropdown" id="notifDD">
-          <div class="dd-profile" style="background:var(--maroon-900);color:#fff;">
+          <div class="dd-profile notif-header-row" style="background:var(--maroon-900);color:#fff;">
             <span class="name" style="color:#fff;">Notifications</span>
+            <span class="notif-markall" onclick="markAllNotificationsRead(event)">Mark all read</span>
           </div>
-          <div class="notif-item"><b>Medical Semso claim</b> submitted by Tshering Dorji<div class="t">10 minutes ago</div></div>
-          <div class="notif-item"><b>New member</b> registration pending approval<div class="t">2 hours ago</div></div>
-          <div class="notif-item"><b>Contribution deadline</b> reminder — 1 August 2026<div class="t">1 day ago</div></div>
+          <div class="notif-list" id="notifList"></div>
         </div>
       </div>
       <div class="profile-chip" onclick="toggleDropdown('profileDD')">
-        <div class="avatar">A</div>
-        <span>Administrator ▾</span>
+        <div class="avatar" id="profileAvatar">A</div>
+        <span id="profileChipName">Administrator ▾</span>
         <div class="dropdown" id="profileDD">
           <div class="dd-profile">
-            <div class="avatar-lg">A</div>
+            <div class="avatar-lg" id="profileAvatarLg">A</div>
             <div>
-              <div class="name">Administrator</div>
-              <div class="mail">admin@bptshokpa.bt</div>
+              <div class="name" id="profileFullName">Administrator</div>
+              <div class="mail" id="profileMail">admin@bptshokpa.bt</div>
             </div>
           </div>
           <div class="dd-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg>Profile</div>
-          <div class="dd-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 018 0v3"/></svg>Change Password</div>
+          <div class="dd-item" onclick="toggleDropdown('profileDD'); goPageByName('admin-login');"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 018 0v3"/></svg>Change Password</div>
           <div class="dd-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 00.3 1.9l.1.1a2 2 0 11-2.8 2.8l-.1-.1a1.7 1.7 0 00-1.9-.3 1.7 1.7 0 00-1 1.5V21a2 2 0 11-4 0v-.1a1.7 1.7 0 00-1-1.6 1.7 1.7 0 00-1.9.3l-.1.1a2 2 0 11-2.8-2.8l.1-.1a1.7 1.7 0 00.3-1.9 1.7 1.7 0 00-1.5-1H3a2 2 0 110-4h.1a1.7 1.7 0 001.5-1 1.7 1.7 0 00-.3-1.9l-.1-.1a2 2 0 112.8-2.8l.1.1a1.7 1.7 0 001.9.3H9a1.7 1.7 0 001-1.5V3a2 2 0 114 0v.1a1.7 1.7 0 001 1.5 1.7 1.7 0 001.9-.3l.1-.1a2 2 0 112.8 2.8l-.1.1a1.7 1.7 0 00-.3 1.9V9a1.7 1.7 0 001.5 1h.1a2 2 0 110 4h-.1a1.7 1.7 0 00-1.5 1z"/></svg>Settings</div>
           <div class="dd-item logout" onclick="openLogoutModal(event)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9"/></svg>Logout</div>
         </div>
@@ -818,6 +913,20 @@
         </div>
       </div>
 
+      <div class="nav-group" id="nav-group-admin">
+        <div class="nav-item" onclick="toggleSub('sub-admin', this)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l7 3.5v5c0 4.6-3 8.4-7 9.5-4-1.1-7-4.9-7-9.5v-5L12 3z"/><path d="M9 12l2 2 4-4"/></svg>
+          <span class="nav-label">Administrator</span>
+          <span class="nav-caret">▸</span>
+        </div>
+        <div class="submenu" id="sub-admin">
+          <a data-page="admin-announcements" onclick="goPage('admin-announcements', this)">Announcements</a>
+          <a data-page="admin-photos" onclick="goPage('admin-photos', this)">Update Photos</a>
+          <a data-page="admin-credentials" onclick="goPage('admin-credentials', this)">Issue Credentials</a>
+          <a data-page="admin-login" onclick="goPage('admin-login', this)">Login Settings</a>
+        </div>
+      </div>
+
       <div class="nav-item" data-page="forms" onclick="goPage('forms', this)">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 3h8l4 4v14H7z"/><path d="M9 12h6M9 16h4"/></svg>
         <span class="nav-label">Forms</span>
@@ -839,22 +948,12 @@
 
       <!-- DASHBOARD PAGE -->
       <div class="page active" id="page-dashboard">
-        <div class="hero" style="background-image:url('https://images.unsplash.com/photo-1544735716-392fe2489ffa?w=1200&q=80')">
-          <button class="hero-arrow">‹</button>
-          <div class="hero-content">
-            <h2>Annual General Meeting 2026</h2>
-            <div class="hero-meta">
-              <span>📍 Babena, Zhung Dratshang Guest House</span>
-              <span>📅 15 September 2026</span>
-            </div>
-          </div>
-          <div class="hero-dots"><span class="on"></span><span></span><span></span><span></span></div>
-        </div>
+        <div id="heroMount"></div>
 
         <div class="announce">
           <span class="badge">ANNOUNCEMENT</span>
           <div class="announce-track">
-            <span>Annual contribution collection starts on 1 August 2026 &nbsp;•&nbsp; Medical Semso claim submission closes on 31 August 2026 &nbsp;•&nbsp; Annual General Meeting on 15 September 2026 &nbsp;•&nbsp; Welcome to Bikhar Phenday Tshokpa Management System</span>
+            <span id="announceTrackText">Welcome to Bikhar Phenday Tshokpa Management System</span>
           </div>
           <button class="pause-btn">⏸</button>
         </div>
@@ -958,17 +1057,149 @@ function togglePw(){
   const p = document.getElementById('password');
   p.type = p.type === 'password' ? 'text' : 'password';
 }
-function doLogin(){
+
+/* ---------- session / role-based access ---------- */
+let currentSession = { role:'admin', authorized:true, name:'Administrator', username:'admin', refId:null };
+
+// Actions a view-only (unauthorized) member/staff session is still allowed to trigger —
+// navigation, search/lookup, filters, exports, and UI toggles. Everything else that
+// creates, edits, removes, or approves data is blocked until an admin authorizes the account.
+const VIEW_ONLY_SAFE_ACTIONS = new Set([
+  'goPage','goPageByName','goHeroSlide','heroNextSlide',
+  'toggleDropdown','toggleSidebarCollapse','toggleSidebarMobile','toggleSub','togglePw',
+  'lookupClaimMember','lookupCredMember','lookupCtbMember','lookupMactMember',
+  'makeMemberSearch','clearMemberSearch','clearStmtIndividualSearch','filterStmtIndividual','applyStmtFilter',
+  'downloadReportPDF','downloadStatementPDF',
+  'markAllNotificationsRead','openNotification','showMemberDetail','hideBioSuccess',
+  'toggleAssetForm','toggleAssetsTotalForm','toggleExpForm','toggleVmEdit',
+  'cancelContribEdit','cancelRemoveContrib',
+  'openLogoutModal','closeLogoutModal','confirmLogout','backToLogin'
+]);
+
+function isViewOnly(){
+  return currentSession.role !== 'admin' && !currentSession.authorized;
+}
+
+function showViewOnlyToast(){
+  let toast = document.getElementById('viewOnlyToast');
+  if(!toast){
+    toast = document.createElement('div');
+    toast.id = 'viewOnlyToast';
+    toast.style.cssText = 'position:fixed;left:50%;bottom:28px;transform:translateX(-50%);background:var(--maroon-950);color:#fff;padding:12px 20px;border-radius:10px;font-size:13px;font-weight:600;box-shadow:0 8px 24px rgba(0,0,0,0.25);z-index:9999;opacity:0;transition:opacity .15s;';
+    document.body.appendChild(toast);
+  }
+  toast.textContent = 'View-only access — ask an admin to authorize your account to make changes.';
+  toast.style.opacity = '1';
+  clearTimeout(toast._hideTimer);
+  toast._hideTimer = setTimeout(()=>{ toast.style.opacity = '0'; }, 2600);
+}
+
+function guardMutatingClick(e){
+  if(!isViewOnly()) return;
+  const el = e.target.closest('[onclick]');
+  if(!el || !el.closest('.main')) return;
+  const handlerAttr = el.getAttribute('onclick') || '';
+  const match = handlerAttr.match(/^\s*([a-zA-Z_][a-zA-Z0-9_]*)\s*\(/);
+  const fn = match ? match[1] : null;
+  if(fn && VIEW_ONLY_SAFE_ACTIONS.has(fn)) return;
+  e.preventDefault();
+  e.stopPropagation();
+  e.stopImmediatePropagation();
+  showViewOnlyToast();
+}
+document.addEventListener('click', guardMutatingClick, true);
+
+function guardMutatingSubmit(e){
+  if(!isViewOnly()) return;
+  if(!e.target.closest('.main')) return;
+  e.preventDefault();
+  e.stopPropagation();
+  showViewOnlyToast();
+}
+document.addEventListener('submit', guardMutatingSubmit, true);
+
+function applyAccessControl(){
+  const isAdmin = currentSession.role === 'admin';
+  const adminGroup = document.getElementById('nav-group-admin');
+  if(adminGroup) adminGroup.style.display = isAdmin ? '' : 'none';
+
+  const main = document.querySelector('.main');
+  if(main) main.classList.toggle('view-restricted', isViewOnly());
+
+  let banner = document.getElementById('viewOnlyBanner');
+  if(isViewOnly()){
+    if(!banner && main){
+      banner = document.createElement('div');
+      banner.id = 'viewOnlyBanner';
+      banner.style.cssText = 'background:#fdf1de;color:#8a5a10;border:1px solid #f0d8a8;border-radius:10px;padding:10px 16px;font-size:12.5px;font-weight:600;margin-bottom:14px;';
+      banner.textContent = 'View-only access — your account has not yet been authorized to make changes. Contact an administrator.';
+      main.prepend(banner);
+    }
+  } else if(banner){
+    banner.remove();
+  }
+}
+
+function setSessionAndEnterApp(session){
+  currentSession = session;
+  const initial = (session.name || '?').trim().charAt(0).toUpperCase() || 'U';
+  const chipName = document.getElementById('profileChipName');
+  const avatar = document.getElementById('profileAvatar');
+  const avatarLg = document.getElementById('profileAvatarLg');
+  const fullName = document.getElementById('profileFullName');
+  const mail = document.getElementById('profileMail');
+  if(chipName) chipName.textContent = session.name + ' ▾';
+  if(avatar) avatar.textContent = initial;
+  if(avatarLg) avatarLg.textContent = initial;
+  if(fullName) fullName.textContent = session.name;
+  if(mail) mail.textContent = session.role === 'admin' ? 'admin@bptshokpa.bt' : (session.role.charAt(0).toUpperCase()+session.role.slice(1));
+
   document.getElementById('loginScreen').style.display='none';
   document.getElementById('appScreen').style.display='block';
+  renderHeroCarousel();
+  renderAnnouncementTicker();
+  renderNotifications();
   loadAllData();
+  applyAccessControl();
+}
+
+function doLogin(){
+  const username = document.getElementById('username').value.trim();
+  const password = document.getElementById('password').value;
+  const errorEl = document.getElementById('loginError');
+
+  if(username === adminAuth.username && password === adminAuth.password){
+    if(errorEl) errorEl.classList.remove('show');
+    setSessionAndEnterApp({ role:'admin', authorized:true, name:'Administrator', username, refId:null });
+    return;
+  }
+
+  if(typeof seedCredentialsDatabase === 'function') seedCredentialsDatabase();
+  const issued = (credentialsDatabase || []).find(c =>
+    c.username === username && c.password === password && c.status === 'active'
+  );
+  if(issued){
+    if(errorEl) errorEl.classList.remove('show');
+    setSessionAndEnterApp({
+      role: issued.type === 'Staff' ? 'staff' : 'member',
+      authorized: !!issued.authorized,
+      name: issued.name,
+      username: issued.username,
+      refId: issued.refId
+    });
+    return;
+  }
+
+  if(errorEl) errorEl.classList.add('show');
 }
 function backToLogin(){
+  if(heroTimer) clearInterval(heroTimer);
   document.getElementById('logoutOverlay').classList.remove('open');
   document.getElementById('logoutConfirmModal').style.display='block';
   document.getElementById('logoutSuccessModal').style.display='none';
   document.getElementById('appScreen').style.display='none';
   document.getElementById('loginScreen').style.display='flex';
+  currentSession = { role:'admin', authorized:true, name:'Administrator', username:'admin', refId:null };
 }
 
 /* ---------- dropdowns ---------- */
@@ -983,6 +1214,55 @@ document.addEventListener('click', function(e){
     document.querySelectorAll('.dropdown').forEach(d=>d.classList.remove('open'));
   }
 });
+
+/* ---------- notification center ---------- */
+let notifSeq = 0;
+let notifications = [
+  { id:++notifSeq, title:'Medical Semso claim', detail:'submitted by Tshering Dorji', time:'10 minutes ago', read:false, page:'semso-medical' },
+  { id:++notifSeq, title:'New member', detail:'registration pending approval', time:'2 hours ago', read:false, page:'members-info' },
+  { id:++notifSeq, title:'Contribution deadline', detail:'reminder — 1 August 2026', time:'1 day ago', read:false, page:'contrib-add' },
+];
+
+function addNotification(title, detail, page){
+  notifications.unshift({ id:++notifSeq, title, detail, time:'Just now', read:false, page:page || null });
+  if(notifications.length > 30) notifications.length = 30; // keep the list from growing forever
+  renderNotifications();
+}
+
+function renderNotifications(){
+  const badge = document.getElementById('bellBadge');
+  const list = document.getElementById('notifList');
+  if(!badge || !list) return;
+
+  const unreadCount = notifications.filter(n => !n.read).length;
+  badge.textContent = unreadCount > 9 ? '9+' : String(unreadCount);
+  badge.classList.toggle('hidden', unreadCount === 0);
+
+  if(notifications.length === 0){
+    list.innerHTML = `<div class="notif-empty">You're all caught up — no notifications yet.</div>`;
+    return;
+  }
+
+  list.innerHTML = notifications.map(n => `
+    <div class="notif-item ${n.read ? 'read' : 'unread'}" onclick="openNotification(${n.id})">
+      <b>${n.title}</b> ${n.detail}
+      <div class="t">${n.time}</div>
+    </div>`).join('');
+}
+
+function openNotification(id){
+  const n = notifications.find(x => x.id === id);
+  if(!n) return;
+  n.read = true;
+  renderNotifications();
+  if(n.page) goPageByName(n.page);
+}
+
+function markAllNotificationsRead(e){
+  if(e) e.stopPropagation();
+  notifications.forEach(n => n.read = true);
+  renderNotifications();
+}
 
 /* ---------- logout modal ---------- */
 function openLogoutModal(e){
@@ -1028,9 +1308,9 @@ const pageMeta = {
   'contrib-add': {title:'Add Contributions', crumb:'Home / Contributions / Add Contributions', table:['Member','Amount (Nu.)','Date','Type','Status'], rows:[['Sonam Wangchuk','1,000','19 Jul 2026','Annual','active'],['Pema Lhamo','1,000','19 Jul 2026','Annual','pending']]},
   'contrib-edit': {title:'Edit Contributions', crumb:'Home / Contributions / Edit Contributions', table:['Member','Amount (Nu.)','Date','Type','Status'], rows:[['Tshering Dorji','1,200','10 Jul 2026','Annual','active']]},
   'contrib-remove': {title:'Remove Contributions', crumb:'Home / Contributions / Remove Contributions', table:['Member','Amount (Nu.)','Date','Reason','Status'], rows:[['Kinley Zangmo','800','01 Jun 2026','Duplicate entry','pending']]},
-  'semso-medical': {title:'Medical Claim', crumb:'Home / Semso / Medical Claim', table:['Member','Amount (Nu.)','Hospital','Date Filed','Status'], rows:[['Ugyen Tenzin','15,000','JDWNRH Thimphu','05 Jul 2026','pending'],['Karma Wangmo','8,500','Mongar Hospital','28 Jun 2026','active']]},
-  'semso-death': {title:'Death Claim', crumb:'Home / Semso / Death Claim', table:['Deceased','Claimant','Amount (Nu.)','Date Filed','Status'], rows:[['Dorji Norbu','Sonam Dema','50,000','15 Jun 2026','active']]},
-  'semso-other': {title:'Other Claim', crumb:'Home / Semso / Other Claim', table:['Member','Claim Type','Amount (Nu.)','Date Filed','Status'], rows:[['Pema Choden','Disability Support','12,000','20 May 2026','pending']]},
+  'semso-medical': {title:'Medical Claim', crumb:'Home / Semso / Medical Claim', table:['CID','Member','Amount (Nu.)','Hospital','Date Filed','Status'], rows:[['10905033512','Ugyen Tenzin','15,000','JDWNRH Thimphu','05 Jul 2026','pending'],['10903022477','Karma Wangmo','8,500','Mongar Hospital','28 Jun 2026','active']]},
+  'semso-death': {title:'Death Claim', crumb:'Home / Semso / Death Claim', table:['CID','Deceased','Claimant','Amount (Nu.)','Date Filed','Status'], rows:[['10901011234','Dorji Norbu','Sonam Dema','50,000','15 Jun 2026','active']]},
+  'semso-other': {title:'Other Claim', crumb:'Home / Semso / Other Claim', table:['CID','Member','Claim Type','Amount (Nu.)','Date Filed','Status'], rows:[['10906044321','Pema Choden','Disability Support','12,000','20 May 2026','pending']]},
   'stmt-individual': {title:'Individual Statement', crumb:'Home / Statement / Individual Statement', table:['Member ID','CID','Member','Contributions (Nu.)','Claims (Nu.)','Balance (Nu.)','Status'], rows:[['MBR-0231','10912011231','Sonam Wangchuk','12,000','0','12,000','active'],['MBR-0455','10908022455','Kinley Zangmo','9,000','2,000','7,000','active'],['MBR-0512','10905033512','Ugyen Tenzin','4,000','0','4,000','pending']]},
   'stmt-overall': {title:'Overall Statement', crumb:'Home / Statement / Overall Statement', table:['Category','Total In (Nu.)','Total Out (Nu.)','Balance','Status'], rows:[['Contributions','8,450,000','—','8,450,000','active'],['Semso Claims','—','1,240,000','-1,240,000','active'],['Assets','—','3,600,000','-3,600,000','active']]},
   'assets-purchase': {title:'Purchase', crumb:'Home / Assets / Purchase', table:['Item','Amount (Nu.)','Vendor','Date','Status'], rows:[['Office Printer','32,000','Tashi Trading','10 Jun 2026','active']]},
@@ -1040,6 +1320,10 @@ const pageMeta = {
   'exp-other': {title:'Other Payments', crumb:'Home / Expenses / Other Payments', table:['Description','Amount (Nu.)','Paid To','Date','Status'], rows:[['Venue rental','15,000','Zhung Dratshang GH','01 Jul 2026','active']]},
   'forms': {title:'Forms', crumb:'Home / Forms', table:['Form Name','Category','Last Updated','Status'], rows:[['New Member Application','Members','12 Jul 2026','active'],['Medical Claim Form','Semso','01 Jul 2026','active']]},
   'reports': {title:'Reports', crumb:'Home / Reports', table:['Report Name','Type','Generated On','Status'], rows:[['Annual Contribution Report','PDF','15 Jul 2026','active'],['Semso Claims Summary','Excel','10 Jul 2026','active']]},
+  'admin-announcements': {title:'Announcements', crumb:'Home / Administrator / Announcements'},
+  'admin-photos': {title:'Update Photos', crumb:'Home / Administrator / Update Photos'},
+  'admin-credentials': {title:'Issue Credentials', crumb:'Home / Administrator / Issue Credentials'},
+  'admin-login': {title:'Login Settings', crumb:'Home / Administrator / Login Settings'},
   'settings': {title:'Settings', crumb:'Home / Settings', table:['Setting','Value','Last Changed','Status'], rows:[['Organization Name','Bikhar Phenday Tshokpa','—','active'],['Currency','Nu. (BTN)','—','active']]},
 };
 
@@ -1047,6 +1331,11 @@ const pageMeta = {
 let memberDatabase = [];
 
 /* ===================== BACKEND API WIRING ===================== */
+/* ============================================================
+   EDIT THIS when you deploy the backend online — replace the
+   localhost URL below with your deployed backend's URL + "/api"
+   e.g. 'https://bpt-backend.onrender.com/api'
+   ============================================================ */
 const API_BASE = window.BPT_API_BASE || 'http://localhost:4000/api';
 
 async function apiGet(path){
@@ -1118,15 +1407,16 @@ async function loadAllData(){
     pageMeta['contrib-edit'].rows = contribRows;
     pageMeta['contrib-remove'].rows = contribRows.map((r,i)=>[r[0], r[1], r[2], 'Duplicate entry', contribs[i].status]);
     contribDatabase = contribs.map(c => ({
-      date: c.dateLabel || c.date, cid: (memberDatabase.find(m=>m.id===c.memberId)||{}).cid || '',
-      member: c.member, amount: fmtMoney(c.amount), mode: c.mode || 'Cash',
-      journal: '—', period: (c.date||'').slice(0,4) || '2026', screenshot: '', status: c.status,
+      date: c.dateLabel || c.date, cid: c.cid || (memberDatabase.find(m=>m.id===c.memberId)||{}).cid || '',
+      member: c.member, memberId: c.memberId || '', amount: fmtMoney(c.amount), mode: c.mode || 'Cash',
+      journal: c.journal || '—', period: c.period || (c.date||'').slice(0,4) || '2026', screenshot: '', status: c.status,
     }));
 
     /* ---- semso claims ---- */
-    pageMeta['semso-medical'].rows = semsoMed.map(c => [c.member, fmtMoney(c.amount), c.hospital, c.dateFiledLabel || c.dateFiled, c.status]);
-    pageMeta['semso-death'].rows = semsoDeath.map(c => [c.deceased, c.claimant, fmtMoney(c.amount), c.dateFiledLabel || c.dateFiled, c.status]);
-    pageMeta['semso-other'].rows = semsoOther.map(c => [c.member, c.claimType, fmtMoney(c.amount), c.dateFiledLabel || c.dateFiled, c.status]);
+    const memberCid = c => c.cid || (memberDatabase.find(m=>m.id===c.memberId)||{}).cid || '';
+    pageMeta['semso-medical'].rows = semsoMed.map(c => [memberCid(c), c.member, fmtMoney(c.amount), c.hospital, c.dateFiledLabel || c.dateFiled, c.status]);
+    pageMeta['semso-death'].rows = semsoDeath.map(c => [memberCid(c), c.deceased, c.claimant, fmtMoney(c.amount), c.dateFiledLabel || c.dateFiled, c.status]);
+    pageMeta['semso-other'].rows = semsoOther.map(c => [memberCid(c), c.member, c.claimType, fmtMoney(c.amount), c.dateFiledLabel || c.dateFiled, c.status]);
 
     /* ---- assets ---- */
     pageMeta['assets-purchase'].rows = assets.purchases.map(a => [a.item, fmtMoney(a.amount), a.vendor, a.date, 'active']);
@@ -1170,10 +1460,17 @@ function renderPlaceholder(key){
   if(key === 'semso-medical' || key === 'semso-death' || key === 'semso-other'){ renderSemsoPage(mount, meta, key); return; }
   if(key === 'members-terminate' || key === 'members-resigned'){ renderMemberActionPage(mount, meta, key); return; }
   if(key === 'contrib-add'){ renderContribAddPage(mount, meta); return; }
+  if(key === 'vision'){ renderVisionPage(mount, meta); return; }
+  if(key === 'admin-announcements'){ renderAdminAnnouncementsPage(mount, meta); return; }
+  if(key === 'admin-photos'){ renderAdminPhotosPage(mount, meta); return; }
+  if(key === 'admin-credentials'){ renderAdminCredentialsPage(mount, meta); return; }
+  if(key === 'admin-login'){ renderAdminLoginPage(mount, meta); return; }
   if(key === 'contrib-edit'){ renderContribEditPage(mount, meta); return; }
   if(key === 'contrib-remove'){ renderContribRemovePage(mount, meta); return; }
   if(key === 'stmt-individual'){ renderStmtIndividualPage(mount, meta); return; }
   if(key === 'assets-purchase' || key === 'assets-replace'){ renderAssetPage(mount, meta, key); return; }
+  if(key === 'assets-total'){ renderAssetsTotalPage(mount, meta); return; }
+  if(key === 'exp-staff' || key === 'exp-other'){ renderExpensePage(mount, meta, key); return; }
   if(key === 'reports'){ renderReportsPage(mount, meta); return; }
   if(key === 'management'){ renderManagementPage(mount, meta); return; }
 
@@ -1454,6 +1751,7 @@ function submitBioData(e){
   const newId = 'MBR-' + String(1000 + memberDatabase.length).slice(-4);
   memberDatabase.push({ id:newId, ...newMemberPayload });
   apiPost('/members', newMemberPayload).catch(err => console.error('Failed to save member to backend:', err));
+  addNotification('New member', `${name} (${newId}) registered — pending approval`, 'members-info');
 
   document.getElementById('bioSuccessName').textContent = name;
   const docCount = bioUploadedFiles.length;
@@ -1601,8 +1899,54 @@ function showMemberDetail(id){
         <div class="md-item full">${field('Permanent Address', m.address)}</div>
       </div>
       ${docsHtml}
-    </div>`;
+    </div>
+    ${memberContributionHistoryHtml(m)}`;
   mount.scrollIntoView({behavior:'smooth', block:'nearest'});
+}
+
+/* ---------- contribution history — shown under member details, like a bank transaction inquiry ---------- */
+function memberContributionHistoryHtml(m){
+  seedContribDatabase();
+  const history = contribDatabase.filter(c => (c.memberId && c.memberId === m.id) || c.cid === m.cid);
+
+  if(history.length === 0){
+    return `
+      <div class="ph-card" style="margin-top:16px;">
+        <div class="upload-panel-title">Contribution History</div>
+        <p style="color:var(--muted);font-size:12.5px;margin:6px 0 0;">No contributions recorded yet for this member.</p>
+      </div>`;
+  }
+
+  const parseAmt = v => parseInt(String(v||'0').replace(/,/g,''),10) || 0;
+  const chronological = [...history].sort((a,b) => new Date(a.date) - new Date(b.date));
+  let running = 0;
+  const withBalance = chronological.map(c => { running += parseAmt(c.amount); return { ...c, balance: running }; });
+  const statementRows = [...withBalance].reverse(); // most recent first, like a bank statement
+
+  const rowsHtml = statementRows.map(c => `
+    <tr>
+      <td>${c.date}</td>
+      <td>${c.mode || '—'}</td>
+      <td>${c.journal || '—'}</td>
+      <td>${c.period || '—'}</td>
+      <td>Nu. ${c.amount}</td>
+      <td>Nu. ${fmtMoney(c.balance)}</td>
+      <td><span class="pill ${c.status}">${c.status.charAt(0).toUpperCase()+c.status.slice(1)}</span></td>
+    </tr>`).join('');
+
+  return `
+    <div class="ph-card member-detail-card" style="margin-top:16px;">
+      <div class="md-head" style="margin-bottom:14px;">
+        <div>
+          <div class="upload-panel-title" style="margin:0;">Contribution History</div>
+          <div class="md-head-sub" style="margin-top:4px;">${history.length} transaction${history.length===1?'':'s'} &nbsp;•&nbsp; Total contributed: Nu. ${fmtMoney(running)}</div>
+        </div>
+      </div>
+      <table class="ph-table">
+        <thead><tr><th>Date</th><th>Payment Mode</th><th>Journal No./RRN</th><th>Months/Year</th><th>Amount (Nu.)</th><th>Balance (Nu.)</th><th>Status</th></tr></thead>
+        <tbody>${rowsHtml}</tbody>
+      </table>
+    </div>`;
 }
 
 /* ===================== FORMS — upload & download ===================== */
@@ -1694,6 +2038,7 @@ function addFormEntry(){
   const url = URL.createObjectURL(formPendingFile);
   const todayLabel = new Date().toLocaleDateString('en-US',{day:'2-digit',month:'short',year:'numeric'});
   formsDatabase.unshift({ name, category, updated:todayLabel, status:'active', url });
+  addNotification('Form uploaded', `"${name}" is now available under ${category}`, 'forms');
   document.getElementById('form-name').value = '';
   formPendingFile = null;
   renderFormFileList();
@@ -1722,29 +2067,61 @@ const semsoPanelCopy = {
   'semso-other': {title:'Supporting Documents', sub:'Any other documents relevant to this claim — PDF or photographed copies (JPG, PNG)'}
 };
 
+/* ---- CID member lookup + entry fields, per claim type ---- */
+const semsoLookupMember = { 'semso-medical':null, 'semso-death':null, 'semso-other':null };
+
+function semsoClaimFieldsHtml(key){
+  if(key === 'semso-medical'){
+    return `
+      <div class="bio-field"><label>Amount (Nu.) *</label><input type="number" id="claim-${key}-amount" min="0" placeholder="e.g. 15000"></div>
+      <div class="bio-field"><label>Hospital / Facility *</label><input type="text" id="claim-${key}-hospital" placeholder="e.g. JDWNRH Thimphu"></div>
+      <div class="bio-field"><label>Date Filed *</label><input type="date" id="claim-${key}-date"></div>`;
+  }
+  if(key === 'semso-death'){
+    return `
+      <div class="bio-field"><label>Claimant Name *</label><input type="text" id="claim-${key}-claimant" placeholder="Name of claimant"></div>
+      <div class="bio-field"><label>Relation to Deceased</label><input type="text" id="claim-${key}-relation" placeholder="e.g. Spouse, Son"></div>
+      <div class="bio-field"><label>Claimant Contact</label><input type="tel" id="claim-${key}-contact" placeholder="17xxxxxx"></div>
+      <div class="bio-field"><label>Amount (Nu.) *</label><input type="number" id="claim-${key}-amount" min="0" placeholder="e.g. 50000"></div>
+      <div class="bio-field"><label>Date Filed *</label><input type="date" id="claim-${key}-date"></div>`;
+  }
+  return `
+    <div class="bio-field"><label>Claim Type *</label><input type="text" id="claim-${key}-type" placeholder="e.g. Disability Support"></div>
+    <div class="bio-field"><label>Amount (Nu.) *</label><input type="number" id="claim-${key}-amount" min="0" placeholder="e.g. 12000"></div>
+    <div class="bio-field"><label>Date Filed *</label><input type="date" id="claim-${key}-date"></div>`;
+}
+
 function renderSemsoPage(mount, meta, key){
-  const rows = meta.rows.map(r=>{
-    const status = r[r.length-1];
-    const cells = r.slice(0,-1).map(c=>`<td>${c}</td>`).join('');
-    return `<tr>${cells}<td><span class="pill ${status}">${status.charAt(0).toUpperCase()+status.slice(1)}</span></td></tr>`;
-  }).join('');
   const headers = meta.table.map(h=>`<th>${h}</th>`).join('');
   const copy = semsoPanelCopy[key];
+  const deceasedLabel = key === 'semso-death' ? 'Deceased Member' : 'Member';
 
   mount.innerHTML = `
     <div class="ph-header">
       <div><h2>${meta.title}</h2><div class="crumb">${meta.crumb}</div></div>
-      <button class="btn-primary">+ Add New</button>
-    </div>
-    <div class="ph-card">
-      <table class="ph-table">
-        <thead><tr>${headers}</tr></thead>
-        <tbody>${rows}</tbody>
-      </table>
     </div>
 
-    <div class="ph-card" style="margin-top:16px;">
-      <div class="upload-panel-title">${copy.title}</div>
+    <div class="ph-card">
+      <div class="upload-panel-title">New ${meta.title}</div>
+      <div class="claim-lookup-bar">
+        <div class="bio-field">
+          <label>Search ${deceasedLabel} by CID *</label>
+          <input type="text" id="claim-cid-${key}" maxlength="11" placeholder="Enter 11-digit CID"
+                 onkeydown="if(event.key==='Enter'){event.preventDefault();lookupClaimMember('${key}');}">
+        </div>
+        <button type="button" class="btn-primary" onclick="lookupClaimMember('${key}')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+          Search
+        </button>
+      </div>
+      <div id="claim-lookup-result-${key}"></div>
+
+      <div class="bio-form-section">Claim Details</div>
+      <div class="bio-form-grid">
+        ${semsoClaimFieldsHtml(key)}
+      </div>
+
+      <div class="bio-form-section">${copy.title}</div>
       <div class="bio-dropzone" id="semso-dropzone-${key}"
            onclick="document.getElementById('semso-file-input-${key}').click()"
            ondragover="handleSemsoDragOver(event,'${key}')" ondragleave="handleSemsoDragLeave(event,'${key}')" ondrop="handleSemsoDrop(event,'${key}')">
@@ -1754,8 +2131,145 @@ function renderSemsoPage(mount, meta, key){
         <input type="file" id="semso-file-input-${key}" multiple accept=".pdf,application/pdf,image/jpeg,image/png,image/jpg" style="display:none;" onchange="handleSemsoFileChange(event,'${key}')">
       </div>
       <div class="bio-file-list" id="semso-file-list-${key}"></div>
+
+      <div class="bio-form-actions">
+        <button type="button" class="btn-primary" onclick="submitSemsoClaim('${key}')">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:6px;vertical-align:-3px;"><path d="M20 6L9 17l-5-5"></path></svg>
+          Submit Claim
+        </button>
+      </div>
+    </div>
+
+    <div class="ph-card" style="margin-top:16px;">
+      <div class="upload-panel-title">Filed Claims</div>
+      <table class="ph-table">
+        <thead><tr>${headers}</tr></thead>
+        <tbody id="semso-table-body-${key}"></tbody>
+      </table>
     </div>`;
+
+  semsoLookupMember[key] = null;
+  renderClaimLookupResult(key);
+  renderSemsoClaimsTable(key);
   renderSemsoFileList(key);
+}
+
+function renderSemsoClaimsTable(key){
+  const meta = pageMeta[key];
+  const body = document.getElementById(`semso-table-body-${key}`);
+  if(!body) return;
+  if(!meta.rows.length){
+    body.innerHTML = `<tr><td colspan="${meta.table.length}" style="text-align:center;color:var(--muted);padding:22px 8px;">No claims filed yet.</td></tr>`;
+    return;
+  }
+  body.innerHTML = meta.rows.map(r=>{
+    const status = r[r.length-1];
+    const cells = r.slice(0,-1).map(c=>`<td>${c}</td>`).join('');
+    return `<tr>${cells}<td><span class="pill ${status}">${status.charAt(0).toUpperCase()+status.slice(1)}</span></td></tr>`;
+  }).join('');
+}
+
+function lookupClaimMember(key){
+  const cidInput = document.getElementById(`claim-cid-${key}`);
+  const cid = cidInput ? cidInput.value.trim() : '';
+  const found = cid
+    ? (memberDatabase.find(m => m.cid === cid) || memberDatabase.find(m => m.cid && m.cid.includes(cid)))
+    : null;
+  semsoLookupMember[key] = found || null;
+  renderClaimLookupResult(key);
+}
+
+function renderClaimLookupResult(key){
+  const resultEl = document.getElementById(`claim-lookup-result-${key}`);
+  if(!resultEl) return;
+  const m = semsoLookupMember[key];
+  const cidInput = document.getElementById(`claim-cid-${key}`);
+  const hasCid = cidInput && cidInput.value.trim();
+
+  if(!m){
+    resultEl.innerHTML = hasCid
+      ? `<div class="claim-lookup-result notfound">
+           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+           <div class="claim-lookup-info">
+             <div class="cl-name">No member found</div>
+             <div class="cl-sub">No member record matches that CID. Double-check the number or register the member first.</div>
+           </div>
+         </div>`
+      : `<div class="claim-lookup-result empty">Enter a CID and search to auto-fill the member's details from the member database.</div>`;
+    return;
+  }
+
+  const initial = (m.name || '?').trim().charAt(0).toUpperCase();
+  const avatar = m.photo ? `<img src="${m.photo}" alt="${m.name}">` : initial;
+  const locationBits = [m.village, m.gewog, m.dzongkhag].filter(Boolean).join(', ');
+  resultEl.innerHTML = `
+    <div class="claim-lookup-result found">
+      <div class="claim-lookup-avatar">${avatar}</div>
+      <div class="claim-lookup-info">
+        <div class="cl-name">${m.name}</div>
+        <div class="cl-sub">${m.id} &nbsp;•&nbsp; CID ${m.cid}${locationBits ? ' &nbsp;•&nbsp; ' + locationBits : ''}${m.contact ? ' &nbsp;•&nbsp; ' + m.contact : ''}</div>
+      </div>
+    </div>`;
+}
+
+function submitSemsoClaim(key){
+  const m = semsoLookupMember[key];
+  const resultEl = document.getElementById(`claim-lookup-result-${key}`);
+  if(!m){
+    if(resultEl){
+      resultEl.innerHTML = `<div class="claim-lookup-result notfound">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+        <div class="claim-lookup-info"><div class="cl-name">Search a member first</div><div class="cl-sub">Search and confirm a member by CID before submitting the claim.</div></div>
+      </div>`;
+    }
+    return;
+  }
+
+  const val = id => { const el = document.getElementById(id); return el ? el.value.trim() : ''; };
+  const dateRaw = val(`claim-${key}-date`);
+  const amount = val(`claim-${key}-amount`);
+  if(!dateRaw || !amount) return;
+  const dateLabel = new Date(dateRaw+'T00:00:00').toLocaleDateString('en-US',{day:'2-digit',month:'short',year:'numeric'});
+  const amountLabel = Number(amount).toLocaleString('en-US');
+  const docs = semsoDocs[key].map(f=>f.name);
+
+  let row, payload, apiPath, resetFields;
+  if(key === 'semso-medical'){
+    const hospital = val(`claim-${key}-hospital`);
+    if(!hospital) return;
+    row = [m.cid, m.name, amountLabel, hospital, dateLabel, 'pending'];
+    payload = { memberId:m.id, cid:m.cid, member:m.name, amount:Number(amount), hospital, dateFiled:dateRaw, status:'pending', docs };
+    apiPath = '/semso/medical';
+    resetFields = ['amount','hospital','date'];
+  } else if(key === 'semso-death'){
+    const claimant = val(`claim-${key}-claimant`);
+    const relation = val(`claim-${key}-relation`);
+    const contact = val(`claim-${key}-contact`);
+    if(!claimant) return;
+    row = [m.cid, m.name, claimant, amountLabel, dateLabel, 'pending'];
+    payload = { memberId:m.id, cid:m.cid, deceased:m.name, claimant, relation, claimantContact:contact, amount:Number(amount), dateFiled:dateRaw, status:'pending', docs };
+    apiPath = '/semso/death';
+    resetFields = ['claimant','relation','contact','amount','date'];
+  } else {
+    const claimType = val(`claim-${key}-type`);
+    if(!claimType) return;
+    row = [m.cid, m.name, claimType, amountLabel, dateLabel, 'pending'];
+    payload = { memberId:m.id, cid:m.cid, member:m.name, claimType, amount:Number(amount), dateFiled:dateRaw, status:'pending', docs };
+    apiPath = '/semso/other';
+    resetFields = ['type','amount','date'];
+  }
+
+  pageMeta[key].rows.unshift(row);
+  apiPost(apiPath, payload).catch(err => console.error(`Failed to save ${key} claim to backend:`, err));
+
+  const claimLabel = key === 'semso-medical' ? 'Medical Semso claim' : key === 'semso-death' ? 'Death Semso claim' : 'Semso claim';
+  addNotification(claimLabel, `filed for ${m.name} — Nu. ${amountLabel}`, key);
+
+  document.getElementById(`claim-cid-${key}`).value = '';
+  semsoLookupMember[key] = null;
+  renderClaimLookupResult(key);
+  resetFields.forEach(f=>{ const el = document.getElementById(`claim-${key}-${f}`); if(el) el.value=''; });
+  renderSemsoClaimsTable(key);
 }
 function handleSemsoDragOver(e,key){ e.preventDefault(); document.getElementById(`semso-dropzone-${key}`).classList.add('dragover'); }
 function handleSemsoDragLeave(e,key){ e.preventDefault(); document.getElementById(`semso-dropzone-${key}`).classList.remove('dragover'); }
@@ -1807,29 +2321,51 @@ const memberActionCopy = {
   'members-resigned': {title:'Resignation Letter & Documents', sub:'Signed resignation letter and any supporting documents — PDF or photographed copies (JPG, PNG)'}
 };
 
+const memberActionLookup = { 'members-terminate':null, 'members-resigned':null };
+
+function memberActionFieldsHtml(key){
+  const todayISO = new Date().toISOString().slice(0,10);
+  if(key === 'members-terminate'){
+    return `
+      <div class="bio-field"><label>Reason *</label><input type="text" id="mact-reason-${key}" placeholder="e.g. Relocation"></div>
+      <div class="bio-field"><label>Requested By *</label><input type="text" id="mact-requestedby-${key}" placeholder="e.g. Manager"></div>`;
+  }
+  return `
+    <div class="bio-field"><label>Resigned Date *</label><input type="date" id="mact-date-${key}" value="${todayISO}"></div>
+    <div class="bio-field"><label>Reason *</label><input type="text" id="mact-reason-${key}" placeholder="e.g. Personal"></div>`;
+}
+
 function renderMemberActionPage(mount, meta, key){
-  const rows = meta.rows.map(r=>{
-    const status = r[r.length-1];
-    const cells = r.slice(0,-1).map(c=>`<td>${c}</td>`).join('');
-    return `<tr>${cells}<td><span class="pill ${status}">${status.charAt(0).toUpperCase()+status.slice(1)}</span></td></tr>`;
-  }).join('');
   const headers = meta.table.map(h=>`<th>${h}</th>`).join('');
   const copy = memberActionCopy[key];
+  const actionLabel = key === 'members-terminate' ? 'Termination' : 'Resignation';
 
   mount.innerHTML = `
     <div class="ph-header">
       <div><h2>${meta.title}</h2><div class="crumb">${meta.crumb}</div></div>
-      <button class="btn-primary">+ Add New</button>
-    </div>
-    <div class="ph-card">
-      <table class="ph-table">
-        <thead><tr>${headers}</tr></thead>
-        <tbody>${rows}</tbody>
-      </table>
     </div>
 
-    <div class="ph-card" style="margin-top:16px;">
-      <div class="upload-panel-title">${copy.title}</div>
+    <div class="ph-card">
+      <div class="upload-panel-title">New ${actionLabel} Record</div>
+      <div class="claim-lookup-bar">
+        <div class="bio-field">
+          <label>Search Member by CID *</label>
+          <input type="text" id="mact-cid-${key}" maxlength="11" placeholder="Enter 11-digit CID"
+                 onkeydown="if(event.key==='Enter'){event.preventDefault();lookupMactMember('${key}');}">
+        </div>
+        <button type="button" class="btn-primary" onclick="lookupMactMember('${key}')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+          Search
+        </button>
+      </div>
+      <div id="mact-lookup-result-${key}"></div>
+
+      <div class="bio-form-section">${actionLabel} Details</div>
+      <div class="bio-form-grid">
+        ${memberActionFieldsHtml(key)}
+      </div>
+
+      <div class="bio-form-section">${copy.title}</div>
       <div class="bio-dropzone" id="mact-dropzone-${key}"
            onclick="document.getElementById('mact-file-input-${key}').click()"
            ondragover="handleMactDragOver(event,'${key}')" ondragleave="handleMactDragLeave(event,'${key}')" ondrop="handleMactDrop(event,'${key}')">
@@ -1839,8 +2375,135 @@ function renderMemberActionPage(mount, meta, key){
         <input type="file" id="mact-file-input-${key}" multiple accept=".pdf,application/pdf,image/jpeg,image/png,image/jpg" style="display:none;" onchange="handleMactFileChange(event,'${key}')">
       </div>
       <div class="bio-file-list" id="mact-file-list-${key}"></div>
+
+      <div class="bio-form-actions">
+        <button type="button" class="btn-primary" onclick="submitMemberAction('${key}')">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:6px;vertical-align:-3px;"><path d="M20 6L9 17l-5-5"></path></svg>
+          Submit ${actionLabel}
+        </button>
+      </div>
+    </div>
+
+    <div class="ph-card" style="margin-top:16px;">
+      <div class="upload-panel-title">${meta.title} Records</div>
+      <table class="ph-table">
+        <thead><tr>${headers}</tr></thead>
+        <tbody id="mact-table-body-${key}"></tbody>
+      </table>
     </div>`;
+
+  memberActionLookup[key] = null;
+  renderMactLookupResult(key);
+  renderMactTable(key);
   renderMactFileList(key);
+}
+
+function renderMactTable(key){
+  const meta = pageMeta[key];
+  const body = document.getElementById(`mact-table-body-${key}`);
+  if(!body) return;
+  if(!meta.rows.length){
+    body.innerHTML = `<tr><td colspan="${meta.table.length}" style="text-align:center;color:var(--muted);padding:22px 8px;">No records yet.</td></tr>`;
+    return;
+  }
+  body.innerHTML = meta.rows.map(r=>{
+    const status = r[r.length-1];
+    const cells = r.slice(0,-1).map(c=>`<td>${c}</td>`).join('');
+    return `<tr>${cells}<td><span class="pill ${status}">${status.charAt(0).toUpperCase()+status.slice(1)}</span></td></tr>`;
+  }).join('');
+}
+
+/* CID search is used only to pull up the member's info for the record
+   being filed — it does not filter the records table below. */
+function lookupMactMember(key){
+  const cidInput = document.getElementById(`mact-cid-${key}`);
+  const cid = cidInput ? cidInput.value.trim() : '';
+  const found = cid
+    ? (memberDatabase.find(m => m.cid === cid) || memberDatabase.find(m => m.cid && m.cid.includes(cid)))
+    : null;
+  memberActionLookup[key] = found || null;
+  renderMactLookupResult(key);
+}
+
+function renderMactLookupResult(key){
+  const resultEl = document.getElementById(`mact-lookup-result-${key}`);
+  if(!resultEl) return;
+  const m = memberActionLookup[key];
+  const cidInput = document.getElementById(`mact-cid-${key}`);
+  const hasCid = cidInput && cidInput.value.trim();
+
+  if(!m){
+    resultEl.innerHTML = hasCid
+      ? `<div class="claim-lookup-result notfound">
+           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+           <div class="claim-lookup-info">
+             <div class="cl-name">No member found</div>
+             <div class="cl-sub">No member record matches that CID. Double-check the number or register the member first.</div>
+           </div>
+         </div>`
+      : `<div class="claim-lookup-result empty">Enter a CID and search to pull up the member's details from the member database.</div>`;
+    return;
+  }
+
+  const initial = (m.name || '?').trim().charAt(0).toUpperCase();
+  const avatar = m.photo ? `<img src="${m.photo}" alt="${m.name}">` : initial;
+  const locationBits = [m.village, m.gewog, m.dzongkhag].filter(Boolean).join(', ');
+  resultEl.innerHTML = `
+    <div class="claim-lookup-result found">
+      <div class="claim-lookup-avatar">${avatar}</div>
+      <div class="claim-lookup-info">
+        <div class="cl-name">${m.name}</div>
+        <div class="cl-sub">${m.id} &nbsp;•&nbsp; CID ${m.cid}${locationBits ? ' &nbsp;•&nbsp; ' + locationBits : ''}${m.contact ? ' &nbsp;•&nbsp; ' + m.contact : ''}</div>
+      </div>
+    </div>`;
+}
+
+function submitMemberAction(key){
+  const m = memberActionLookup[key];
+  const resultEl = document.getElementById(`mact-lookup-result-${key}`);
+  if(!m){
+    if(resultEl){
+      resultEl.innerHTML = `<div class="claim-lookup-result notfound">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+        <div class="claim-lookup-info"><div class="cl-name">Search a member first</div><div class="cl-sub">Search and confirm a member by CID before submitting.</div></div>
+      </div>`;
+    }
+    return;
+  }
+
+  const val = id => { const el = document.getElementById(id); return el ? el.value.trim() : ''; };
+  const reason = val(`mact-reason-${key}`);
+  const docs = memberActionDocs[key].map(f=>f.name);
+  let row, payload, apiPath, resetFields;
+
+  if(key === 'members-terminate'){
+    const requestedBy = val(`mact-requestedby-${key}`);
+    if(!reason || !requestedBy) return;
+    row = [m.id, m.name, reason, requestedBy, 'pending'];
+    payload = { memberId:m.id, cid:m.cid, name:m.name, reason, requestedBy, status:'pending', docs };
+    apiPath = '/members/terminate';
+    resetFields = ['reason','requestedby'];
+  } else {
+    const dateRaw = val(`mact-date-${key}`);
+    if(!reason || !dateRaw) return;
+    const dateLabel = new Date(dateRaw+'T00:00:00').toLocaleDateString('en-US',{day:'2-digit',month:'short',year:'numeric'});
+    row = [m.id, m.name, dateLabel, reason, 'resigned'];
+    payload = { memberId:m.id, cid:m.cid, name:m.name, resignedDate:dateRaw, reason, status:'resigned', docs };
+    apiPath = '/members/resigned';
+    resetFields = ['date','reason'];
+  }
+
+  pageMeta[key].rows.unshift(row);
+  apiPost(apiPath, payload).catch(err => console.error(`Failed to save ${key} record to backend:`, err));
+
+  const actionLabel = key === 'members-terminate' ? 'Member termination' : 'Member resignation';
+  addNotification(actionLabel, `submitted for ${m.name} (${m.id})`, key);
+
+  document.getElementById(`mact-cid-${key}`).value = '';
+  memberActionLookup[key] = null;
+  renderMactLookupResult(key);
+  resetFields.forEach(f=>{ const el = document.getElementById(`mact-${f}-${key}`); if(el) el.value=''; });
+  renderMactTable(key);
 }
 function handleMactDragOver(e,key){ e.preventDefault(); document.getElementById(`mact-dropzone-${key}`).classList.add('dragover'); }
 function handleMactDragLeave(e,key){ e.preventDefault(); document.getElementById(`mact-dropzone-${key}`).classList.remove('dragover'); }
@@ -1897,6 +2560,8 @@ function seedContribDatabase(){
   ];
 }
 
+let ctbLookupMember = null;
+
 function renderContribAddPage(mount, meta){
   seedContribDatabase();
   const modeOptions = PAYMENT_MODES.map(m=>`<option>${m}</option>`).join('');
@@ -1906,10 +2571,23 @@ function renderContribAddPage(mount, meta){
       <div><h2>${meta.title}</h2><div class="crumb">${meta.crumb}</div></div>
     </div>
     <div class="ph-card">
+      <div class="upload-panel-title">New Contribution</div>
+      <div class="claim-lookup-bar">
+        <div class="bio-field">
+          <label>Search Member by CID *</label>
+          <input type="text" id="ctb-cid" maxlength="11" placeholder="Enter 11-digit CID"
+                 onkeydown="if(event.key==='Enter'){event.preventDefault();lookupCtbMember();}">
+        </div>
+        <button type="button" class="btn-primary" onclick="lookupCtbMember()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+          Search
+        </button>
+      </div>
+      <div id="ctb-lookup-result"></div>
+
+      <div class="bio-form-section">Contribution Details</div>
       <div class="bio-form-grid">
         <div class="bio-field"><label>Date *</label><input type="date" id="ctb-date"></div>
-        <div class="bio-field"><label>CID *</label><input type="text" id="ctb-cid" maxlength="11" placeholder="11-digit CID"></div>
-        <div class="bio-field"><label>Member *</label><input type="text" id="ctb-member" placeholder="Member name"></div>
         <div class="bio-field"><label>Amount (Nu.) *</label><input type="number" id="ctb-amount" placeholder="e.g. 1000"></div>
         <div class="bio-field"><label>Payment Mode *</label>
           <select id="ctb-mode">${modeOptions}</select>
@@ -1943,8 +2621,53 @@ function renderContribAddPage(mount, meta){
         <tbody id="contrib-table-body"></tbody>
       </table>
     </div>`;
+  ctbLookupMember = null;
+  renderCtbLookupResult();
   renderCtbFileList();
   renderContribTable();
+}
+
+function lookupCtbMember(){
+  const cidInput = document.getElementById('ctb-cid');
+  const cid = cidInput ? cidInput.value.trim() : '';
+  const found = cid
+    ? (memberDatabase.find(m => m.cid === cid) || memberDatabase.find(m => m.cid && m.cid.includes(cid)))
+    : null;
+  ctbLookupMember = found || null;
+  renderCtbLookupResult();
+}
+
+function renderCtbLookupResult(){
+  const resultEl = document.getElementById('ctb-lookup-result');
+  if(!resultEl) return;
+  const m = ctbLookupMember;
+  const cidInput = document.getElementById('ctb-cid');
+  const hasCid = cidInput && cidInput.value.trim();
+
+  if(!m){
+    resultEl.innerHTML = hasCid
+      ? `<div class="claim-lookup-result notfound">
+           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+           <div class="claim-lookup-info">
+             <div class="cl-name">No member found</div>
+             <div class="cl-sub">No member record matches that CID. Double-check the number or register the member first.</div>
+           </div>
+         </div>`
+      : `<div class="claim-lookup-result empty">Enter a CID and search to link this contribution to a member record.</div>`;
+    return;
+  }
+
+  const initial = (m.name || '?').trim().charAt(0).toUpperCase();
+  const avatar = m.photo ? `<img src="${m.photo}" alt="${m.name}">` : initial;
+  const locationBits = [m.village, m.gewog, m.dzongkhag].filter(Boolean).join(', ');
+  resultEl.innerHTML = `
+    <div class="claim-lookup-result found">
+      <div class="claim-lookup-avatar">${avatar}</div>
+      <div class="claim-lookup-info">
+        <div class="cl-name">${m.name}</div>
+        <div class="cl-sub">${m.id} &nbsp;•&nbsp; CID ${m.cid}${locationBits ? ' &nbsp;•&nbsp; ' + locationBits : ''}${m.contact ? ' &nbsp;•&nbsp; ' + m.contact : ''}</div>
+      </div>
+    </div>`;
 }
 
 let ctbPendingFile = null;
@@ -1983,26 +2706,46 @@ function renderCtbFileList(){
     </div>`;
 }
 function addContribEntry(){
+  const m = ctbLookupMember;
+  const resultEl = document.getElementById('ctb-lookup-result');
+  if(!m){
+    if(resultEl){
+      resultEl.innerHTML = `<div class="claim-lookup-result notfound">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+        <div class="claim-lookup-info"><div class="cl-name">Search a member first</div><div class="cl-sub">Search and confirm a member by CID before adding the contribution.</div></div>
+      </div>`;
+    }
+    return;
+  }
+
   const val = id => document.getElementById(id).value.trim();
   const dateRaw = document.getElementById('ctb-date').value;
-  const cid = val('ctb-cid');
-  const member = val('ctb-member');
   const amount = val('ctb-amount');
   const mode = document.getElementById('ctb-mode').value;
   const journal = val('ctb-journal') || '—';
   const period = val('ctb-period');
 
-  if(!dateRaw || !cid || !member || !amount || !period){ return; }
+  if(!dateRaw || !amount || !period){ return; }
 
   const dateLabel = new Date(dateRaw+'T00:00:00').toLocaleDateString('en-US',{day:'2-digit',month:'short',year:'numeric'});
   const amountLabel = Number(amount).toLocaleString('en-US');
 
   contribDatabase.unshift({
-    date:dateLabel, cid:cid, member:member, amount:amountLabel, mode:mode,
+    date:dateLabel, cid:m.cid, member:m.name, memberId:m.id, amount:amountLabel, mode:mode,
     journal:journal, period:period, screenshot:ctbPendingUrl, status:'pending'
   });
 
-  ['ctb-cid','ctb-member','ctb-amount','ctb-journal','ctb-period'].forEach(id=>{ document.getElementById(id).value=''; });
+  const payload = {
+    memberId:m.id, cid:m.cid, member:m.name, amount:Number(amount), mode,
+    journal, date:dateRaw, dateLabel, period, status:'pending'
+  };
+  apiPost('/contributions', payload).catch(err => console.error('Failed to save contribution to backend:', err));
+  addNotification('Contribution added', `Nu. ${amountLabel} from ${m.name} via ${mode}`, 'contrib-edit');
+
+  document.getElementById('ctb-cid').value = '';
+  ctbLookupMember = null;
+  renderCtbLookupResult();
+  ['ctb-amount','ctb-journal','ctb-period'].forEach(id=>{ document.getElementById(id).value=''; });
   document.getElementById('ctb-date').value = '';
   ctbPendingFile = null;
   ctbPendingUrl = '';
@@ -2279,6 +3022,42 @@ const assetPanelCopy = {
   'assets-purchase': {title:'Invoice / Bill / Supporting Documents', sub:'Purchase invoice, bill, or vendor receipt — PDF or photographed copies (JPG, PNG)'},
   'assets-replace': {title:'Invoice / Bill / Supporting Documents', sub:'Replacement invoice, bill, or vendor receipt — PDF or photographed copies (JPG, PNG)'}
 };
+let assetFormOpen = { 'assets-purchase': false, 'assets-replace': false };
+
+function toggleAssetForm(key){
+  assetFormOpen[key] = !assetFormOpen[key];
+  renderAssetPage(document.getElementById('placeholderMount'), pageMeta[key], key);
+}
+
+async function saveAssetEntry(key){
+  if(key === 'assets-purchase'){
+    const item = document.getElementById('asset-item-purchase').value.trim();
+    const amount = document.getElementById('asset-amount-purchase').value.trim();
+    const vendor = document.getElementById('asset-vendor-purchase').value.trim();
+    const date = document.getElementById('asset-date-purchase').value;
+    if(!item || !amount || !date) return;
+    const payload = { item, amount: Number(amount), vendor, date, docs: assetDocs[key].map(f=>f.name) };
+    try{
+      await apiPost('/assets/purchases', payload);
+      pageMeta['assets-purchase'].rows.unshift([item, fmtMoney(amount), vendor || '—', date, 'active']);
+      assetDocs[key] = [];
+    }catch(err){ console.error('Failed to save purchase:', err); }
+  } else {
+    const item = document.getElementById('asset-item-replace').value.trim();
+    const oldValue = document.getElementById('asset-oldvalue-replace').value.trim();
+    const newValue = document.getElementById('asset-newvalue-replace').value.trim();
+    const date = document.getElementById('asset-date-replace').value;
+    if(!item || !newValue || !date) return;
+    const payload = { item, oldValue: Number(oldValue||0), newValue: Number(newValue), date, docs: assetDocs[key].map(f=>f.name) };
+    try{
+      await apiPost('/assets/replacements', payload);
+      pageMeta['assets-replace'].rows.unshift([item, fmtMoney(oldValue||0), fmtMoney(newValue), date, 'active']);
+      assetDocs[key] = [];
+    }catch(err){ console.error('Failed to save replacement:', err); }
+  }
+  assetFormOpen[key] = false;
+  renderAssetPage(document.getElementById('placeholderMount'), pageMeta[key], key);
+}
 
 function renderAssetPage(mount, meta, key){
   const rows = meta.rows.map(r=>{
@@ -2288,21 +3067,10 @@ function renderAssetPage(mount, meta, key){
   }).join('');
   const headers = meta.table.map(h=>`<th>${h}</th>`).join('');
   const copy = assetPanelCopy[key];
+  const todayISO = new Date().toISOString().slice(0,10);
 
-  mount.innerHTML = `
-    <div class="ph-header">
-      <div><h2>${meta.title}</h2><div class="crumb">${meta.crumb}</div></div>
-      <button class="btn-primary">+ Add New</button>
-    </div>
-    <div class="ph-card">
-      <table class="ph-table">
-        <thead><tr>${headers}</tr></thead>
-        <tbody>${rows}</tbody>
-      </table>
-    </div>
-
-    <div class="ph-card" style="margin-top:16px;">
-      <div class="upload-panel-title">${copy.title}</div>
+  const dropzoneHtml = `
+      <div class="bio-form-section">${copy.title}</div>
       <div class="bio-dropzone" id="asset-dropzone-${key}"
            onclick="document.getElementById('asset-file-input-${key}').click()"
            ondragover="handleAssetDragOver(event,'${key}')" ondragleave="handleAssetDragLeave(event,'${key}')" ondrop="handleAssetDrop(event,'${key}')">
@@ -2311,7 +3079,49 @@ function renderAssetPage(mount, meta, key){
         <div class="dz-sub">${copy.sub}</div>
         <input type="file" id="asset-file-input-${key}" multiple accept=".pdf,application/pdf,image/jpeg,image/png,image/jpg" style="display:none;" onchange="handleAssetFileChange(event,'${key}')">
       </div>
-      <div class="bio-file-list" id="asset-file-list-${key}"></div>
+      <div class="bio-file-list" id="asset-file-list-${key}"></div>`;
+
+  const formHtml = !assetFormOpen[key] ? '' : (key === 'assets-purchase' ? `
+    <div class="ph-card" style="margin-top:16px;">
+      <div class="upload-panel-title">New Purchase</div>
+      <div class="bio-form-grid">
+        <div class="bio-field"><label>Item *</label><input type="text" id="asset-item-purchase" placeholder="e.g. Office Printer"></div>
+        <div class="bio-field"><label>Amount (Nu.) *</label><input type="number" id="asset-amount-purchase" placeholder="e.g. 32000"></div>
+        <div class="bio-field"><label>Vendor</label><input type="text" id="asset-vendor-purchase" placeholder="e.g. Tashi Trading"></div>
+        <div class="bio-field"><label>Date *</label><input type="date" id="asset-date-purchase" value="${todayISO}"></div>
+      </div>
+      ${dropzoneHtml}
+      <div class="bio-form-actions">
+        <button type="button" class="btn-primary" onclick="saveAssetEntry('assets-purchase')">Save Purchase</button>
+        <button type="button" class="btn-outline" onclick="toggleAssetForm('assets-purchase')">Cancel</button>
+      </div>
+    </div>` : `
+    <div class="ph-card" style="margin-top:16px;">
+      <div class="upload-panel-title">New Replacement</div>
+      <div class="bio-form-grid">
+        <div class="bio-field"><label>Item *</label><input type="text" id="asset-item-replace" placeholder="e.g. Office Chairs"></div>
+        <div class="bio-field"><label>Old Value (Nu.)</label><input type="number" id="asset-oldvalue-replace" placeholder="e.g. 18000"></div>
+        <div class="bio-field"><label>New Value (Nu.) *</label><input type="number" id="asset-newvalue-replace" placeholder="e.g. 24000"></div>
+        <div class="bio-field"><label>Date *</label><input type="date" id="asset-date-replace" value="${todayISO}"></div>
+      </div>
+      ${dropzoneHtml}
+      <div class="bio-form-actions">
+        <button type="button" class="btn-primary" onclick="saveAssetEntry('assets-replace')">Save Replacement</button>
+        <button type="button" class="btn-outline" onclick="toggleAssetForm('assets-replace')">Cancel</button>
+      </div>
+    </div>`);
+
+  mount.innerHTML = `
+    <div class="ph-header">
+      <div><h2>${meta.title}</h2><div class="crumb">${meta.crumb}</div></div>
+      <button class="btn-primary" onclick="toggleAssetForm('${key}')">+ Add New</button>
+    </div>
+    ${formHtml}
+    <div class="ph-card" style="margin-top:16px;">
+      <table class="ph-table">
+        <thead><tr>${headers}</tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
     </div>`;
   renderAssetFileList(key);
 }
@@ -2358,6 +3168,146 @@ function renderAssetFileList(key){
   }).join('');
 }
 
+/* ===================== TOTAL ASSETS — add a new category ===================== */
+let assetsTotalFormOpen = false;
+function toggleAssetsTotalForm(){
+  assetsTotalFormOpen = !assetsTotalFormOpen;
+  renderAssetsTotalPage(document.getElementById('placeholderMount'), pageMeta['assets-total']);
+}
+async function saveAssetCategory(){
+  const category = document.getElementById('assettotal-category').value.trim();
+  const quantity = document.getElementById('assettotal-quantity').value.trim();
+  const value = document.getElementById('assettotal-value').value.trim();
+  if(!category || !quantity || !value) return;
+  const payload = { category, quantity: Number(quantity), value: Number(value) };
+  try{
+    await apiPost('/assets/categories', payload);
+    pageMeta['assets-total'].rows.push([category, quantity, fmtMoney(value), 'active']);
+  }catch(err){ console.error('Failed to save asset category:', err); }
+  assetsTotalFormOpen = false;
+  renderAssetsTotalPage(document.getElementById('placeholderMount'), pageMeta['assets-total']);
+}
+function renderAssetsTotalPage(mount, meta){
+  const rows = meta.rows.map(r=>{
+    const status = r[r.length-1];
+    const cells = r.slice(0,-1).map(c=>`<td>${c}</td>`).join('');
+    return `<tr>${cells}<td><span class="pill ${status}">${status.charAt(0).toUpperCase()+status.slice(1)}</span></td></tr>`;
+  }).join('');
+  const headers = meta.table.map(h=>`<th>${h}</th>`).join('');
+  const formHtml = !assetsTotalFormOpen ? '' : `
+    <div class="ph-card" style="margin-top:16px;">
+      <div class="upload-panel-title">New Asset Category</div>
+      <div class="bio-form-grid">
+        <div class="bio-field"><label>Asset Category *</label><input type="text" id="assettotal-category" placeholder="e.g. Office Equipment"></div>
+        <div class="bio-field"><label>Quantity *</label><input type="number" id="assettotal-quantity" placeholder="e.g. 10"></div>
+        <div class="bio-field"><label>Value (Nu.) *</label><input type="number" id="assettotal-value" placeholder="e.g. 500000"></div>
+      </div>
+      <div class="bio-form-actions">
+        <button type="button" class="btn-primary" onclick="saveAssetCategory()">Save Category</button>
+        <button type="button" class="btn-outline" onclick="toggleAssetsTotalForm()">Cancel</button>
+      </div>
+    </div>`;
+
+  mount.innerHTML = `
+    <div class="ph-header">
+      <div><h2>${meta.title}</h2><div class="crumb">${meta.crumb}</div></div>
+      <button class="btn-primary" onclick="toggleAssetsTotalForm()">+ Add New</button>
+    </div>
+    ${formHtml}
+    <div class="ph-card" style="margin-top:16px;">
+      <table class="ph-table">
+        <thead><tr>${headers}</tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>`;
+}
+
+/* ===================== EXPENSES — Staff Payments / Other Payments ===================== */
+let expFormOpen = { 'exp-staff': false, 'exp-other': false };
+function toggleExpForm(key){
+  expFormOpen[key] = !expFormOpen[key];
+  renderExpensePage(document.getElementById('placeholderMount'), pageMeta[key], key);
+}
+async function saveExpenseEntry(key){
+  const apiType = key === 'exp-staff' ? 'staff' : 'other';
+  if(key === 'exp-staff'){
+    const staffName = document.getElementById('exp-staffname').value.trim();
+    const position = document.getElementById('exp-position').value.trim();
+    const amount = document.getElementById('exp-amount-staff').value.trim();
+    const month = document.getElementById('exp-month').value.trim();
+    if(!staffName || !amount || !month) return;
+    const payload = { staffName, position, amount: Number(amount), month };
+    try{
+      await apiPost(`/expenses/${apiType}`, payload);
+      pageMeta['exp-staff'].rows.unshift([staffName, position || '—', fmtMoney(amount), month, 'active']);
+    }catch(err){ console.error('Failed to save staff payment:', err); }
+  } else {
+    const description = document.getElementById('exp-description').value.trim();
+    const amount = document.getElementById('exp-amount-other').value.trim();
+    const paidTo = document.getElementById('exp-paidto').value.trim();
+    const date = document.getElementById('exp-date-other').value;
+    if(!description || !amount || !date) return;
+    const payload = { description, amount: Number(amount), paidTo, date };
+    try{
+      await apiPost(`/expenses/${apiType}`, payload);
+      pageMeta['exp-other'].rows.unshift([description, fmtMoney(amount), paidTo || '—', date, 'active']);
+    }catch(err){ console.error('Failed to save other payment:', err); }
+  }
+  expFormOpen[key] = false;
+  renderExpensePage(document.getElementById('placeholderMount'), pageMeta[key], key);
+}
+function renderExpensePage(mount, meta, key){
+  const rows = meta.rows.map(r=>{
+    const status = r[r.length-1];
+    const cells = r.slice(0,-1).map(c=>`<td>${c}</td>`).join('');
+    return `<tr>${cells}<td><span class="pill ${status}">${status.charAt(0).toUpperCase()+status.slice(1)}</span></td></tr>`;
+  }).join('');
+  const headers = meta.table.map(h=>`<th>${h}</th>`).join('');
+  const todayISO = new Date().toISOString().slice(0,10);
+  const thisMonth = new Date().toLocaleDateString('en-US',{month:'long',year:'numeric'});
+
+  const formHtml = !expFormOpen[key] ? '' : (key === 'exp-staff' ? `
+    <div class="ph-card" style="margin-top:16px;">
+      <div class="upload-panel-title">New Staff Payment</div>
+      <div class="bio-form-grid">
+        <div class="bio-field"><label>Staff Name *</label><input type="text" id="exp-staffname" placeholder="e.g. Dechen Wangmo"></div>
+        <div class="bio-field"><label>Position</label><input type="text" id="exp-position" placeholder="e.g. Accountant"></div>
+        <div class="bio-field"><label>Amount (Nu.) *</label><input type="number" id="exp-amount-staff" placeholder="e.g. 28000"></div>
+        <div class="bio-field"><label>Month *</label><input type="text" id="exp-month" placeholder="e.g. July 2026" value="${thisMonth}"></div>
+      </div>
+      <div class="bio-form-actions">
+        <button type="button" class="btn-primary" onclick="saveExpenseEntry('exp-staff')">Save Payment</button>
+        <button type="button" class="btn-outline" onclick="toggleExpForm('exp-staff')">Cancel</button>
+      </div>
+    </div>` : `
+    <div class="ph-card" style="margin-top:16px;">
+      <div class="upload-panel-title">New Other Payment</div>
+      <div class="bio-form-grid">
+        <div class="bio-field"><label>Description *</label><input type="text" id="exp-description" placeholder="e.g. Venue rental"></div>
+        <div class="bio-field"><label>Amount (Nu.) *</label><input type="number" id="exp-amount-other" placeholder="e.g. 15000"></div>
+        <div class="bio-field"><label>Paid To</label><input type="text" id="exp-paidto" placeholder="e.g. Zhung Dratshang GH"></div>
+        <div class="bio-field"><label>Date *</label><input type="date" id="exp-date-other" value="${todayISO}"></div>
+      </div>
+      <div class="bio-form-actions">
+        <button type="button" class="btn-primary" onclick="saveExpenseEntry('exp-other')">Save Payment</button>
+        <button type="button" class="btn-outline" onclick="toggleExpForm('exp-other')">Cancel</button>
+      </div>
+    </div>`);
+
+  mount.innerHTML = `
+    <div class="ph-header">
+      <div><h2>${meta.title}</h2><div class="crumb">${meta.crumb}</div></div>
+      <button class="btn-primary" onclick="toggleExpForm('${key}')">+ Add New</button>
+    </div>
+    ${formHtml}
+    <div class="ph-card" style="margin-top:16px;">
+      <table class="ph-table">
+        <thead><tr>${headers}</tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>`;
+}
+
 /* ===================== REPORTS — downloadable ===================== */
 /* Each report is generated as a PDF on demand from the live data already
    tracked elsewhere in the system (contributions, semso claims, assets). */
@@ -2371,9 +3321,9 @@ const reportGenerators = {
   },
   'Semso Claims Summary': function(){
     const rows = [];
-    pageMeta['semso-medical'].rows.forEach(r => rows.push(['Medical', r[0], r[1], r[3], r[4]]));
-    pageMeta['semso-death'].rows.forEach(r => rows.push(['Death', r[1], r[2], r[3], r[4]]));
-    pageMeta['semso-other'].rows.forEach(r => rows.push(['Other', r[0], r[2], r[3], r[4]]));
+    pageMeta['semso-medical'].rows.forEach(r => rows.push(['Medical', r[1], r[2], r[4], r[5]]));
+    pageMeta['semso-death'].rows.forEach(r => rows.push(['Death', r[2], r[3], r[4], r[5]]));
+    pageMeta['semso-other'].rows.forEach(r => rows.push(['Other', r[1], r[3], r[4], r[5]]));
     return { table: ['Claim Type','Member/Claimant','Amount (Nu.)','Date Filed','Status'], rows };
   }
 };
@@ -2521,6 +3471,7 @@ function addManagementMember(){
   const newEntry = { name, role, contact, photo: mgmtPhotoDataUrl || '' };
   managementDatabase.push(newEntry);
   apiPost('/management', newEntry).catch(err => console.error('Failed to save management member to backend:', err));
+  addNotification('Management updated', `${name} added as ${role}`, 'management');
   document.getElementById('mgmt-name').value = '';
   document.getElementById('mgmt-contact').value = '';
   mgmtPhotoDataUrl = '';
@@ -2544,6 +3495,706 @@ function renderManagementGrid(){
         <div class="mc-contact">${p.contact ? p.contact : '—'}</div>
       </div>`;
   }).join('');
+}
+
+/* ===================== VISION & MISSION ===================== */
+let visionMissionData = null; // lazily seeded
+let vmEditMode = false;
+
+function seedVisionMissionData(){
+  if(visionMissionData) return;
+  visionMissionData = {
+    vision: 'To be a resilient and self-reliant community welfare society that stands by every member of Bikhar Phenday Tshokpa through life\'s milestones and hardships alike.',
+    mission: 'To provide timely financial and social support to our members through structured contributions, transparent fund management, and mutual assistance during medical emergencies, bereavement, and other times of need — while fostering unity, trust, and shared responsibility among all members.',
+    values: ['Unity', 'Transparency', 'Compassion', 'Integrity', 'Self-Reliance', 'Mutual Support'],
+  };
+}
+
+function renderVisionPage(mount, meta){
+  seedVisionMissionData();
+  vmEditMode = false;
+  mount.innerHTML = `
+    <div class="ph-header">
+      <div><h2>${meta.title}</h2><div class="crumb">${meta.crumb}</div></div>
+      <button class="btn-outline" id="vm-edit-toggle" onclick="toggleVmEdit()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:6px;vertical-align:-3px;"><path d="M12 20h9"></path><path d="M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
+        Edit
+      </button>
+    </div>
+    <div id="vm-content-mount"></div>`;
+  renderVmContent();
+}
+
+function renderVmContent(){
+  const mount = document.getElementById('vm-content-mount');
+  if(!mount) return;
+  const d = visionMissionData;
+  const toggleBtn = document.getElementById('vm-edit-toggle');
+
+  if(!vmEditMode){
+    if(toggleBtn) toggleBtn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:6px;vertical-align:-3px;"><path d="M12 20h9"></path><path d="M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>Edit`;
+    mount.innerHTML = `
+      <div class="vm-grid">
+        <div class="vm-card">
+          <div class="vm-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"></path><circle cx="12" cy="12" r="3"></circle></svg></div>
+          <h3>Our Vision</h3>
+          <p>${d.vision}</p>
+        </div>
+        <div class="vm-card">
+          <div class="vm-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3 7h7l-5.5 4.5L18.5 21 12 16.5 5.5 21l2-7.5L2 9h7z"></path></svg></div>
+          <h3>Our Mission</h3>
+          <p>${d.mission}</p>
+        </div>
+      </div>
+      <div class="ph-card" style="margin-top:16px;">
+        <div class="upload-panel-title">Core Values</div>
+        <ul class="vm-values">
+          ${d.values.map(v => `
+            <li>
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg>
+              ${v}
+            </li>`).join('')}
+        </ul>
+      </div>`;
+    return;
+  }
+
+  if(toggleBtn) toggleBtn.innerHTML = 'Cancel';
+  mount.innerHTML = `
+    <div class="ph-card">
+      <div class="upload-panel-title">Edit Vision &amp; Mission</div>
+      <div class="bio-field full" style="margin-bottom:14px;">
+        <label>Vision Statement *</label>
+        <textarea id="vm-vision-input" style="min-height:90px;">${d.vision}</textarea>
+      </div>
+      <div class="bio-field full" style="margin-bottom:14px;">
+        <label>Mission Statement *</label>
+        <textarea id="vm-mission-input" style="min-height:110px;">${d.mission}</textarea>
+      </div>
+      <div class="bio-form-section">Core Values</div>
+      <div class="bio-file-list" id="vm-values-list"></div>
+      <div class="claim-lookup-bar" style="margin-top:10px;">
+        <div class="bio-field">
+          <label>Add a Core Value</label>
+          <input type="text" id="vm-value-input" placeholder="e.g. Accountability"
+                 onkeydown="if(event.key==='Enter'){event.preventDefault();addCoreValue();}">
+        </div>
+        <button type="button" class="btn-outline" onclick="addCoreValue()">Add</button>
+      </div>
+      <div class="bio-form-actions">
+        <button type="button" class="btn-primary" onclick="saveVisionMission()">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:6px;vertical-align:-3px;"><path d="M20 6L9 17l-5-5"></path></svg>
+          Save Changes
+        </button>
+      </div>
+    </div>`;
+  renderVmValuesEditList();
+}
+
+function renderVmValuesEditList(){
+  const list = document.getElementById('vm-values-list');
+  if(!list) return;
+  list.innerHTML = visionMissionData.values.map((v,i) => `
+    <div class="bio-file-chip">
+      <span class="file-name">${v}</span>
+      <button type="button" class="file-remove" onclick="removeCoreValue(${i})" title="Remove">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+      </button>
+    </div>`).join('');
+}
+
+function addCoreValue(){
+  const input = document.getElementById('vm-value-input');
+  const val = input.value.trim();
+  if(!val) return;
+  visionMissionData.values.push(val);
+  input.value = '';
+  renderVmValuesEditList();
+}
+
+function removeCoreValue(i){
+  visionMissionData.values.splice(i, 1);
+  renderVmValuesEditList();
+}
+
+function toggleVmEdit(){
+  vmEditMode = !vmEditMode;
+  renderVmContent();
+}
+
+function saveVisionMission(){
+  const vision = document.getElementById('vm-vision-input').value.trim();
+  const mission = document.getElementById('vm-mission-input').value.trim();
+  if(!vision || !mission) return;
+  visionMissionData.vision = vision;
+  visionMissionData.mission = mission;
+  apiPost('/vision-mission', visionMissionData).catch(err => console.error('Failed to save Vision & Mission to backend:', err));
+  vmEditMode = false;
+  renderVmContent();
+}
+
+/* ===================== ADMINISTRATOR — Announcements ===================== */
+let announcementDatabase = null; // lazily seeded
+
+function seedAnnouncementDatabase(){
+  if(announcementDatabase) return;
+  announcementDatabase = [
+    {id:1, text:'Annual contribution collection starts on 1 August 2026', date:'19 Jul 2026', status:'active'},
+    {id:2, text:'Medical Semso claim submission closes on 31 August 2026', date:'19 Jul 2026', status:'active'},
+    {id:3, text:'Annual General Meeting on 15 September 2026', date:'19 Jul 2026', status:'active'},
+    {id:4, text:'Welcome to Bikhar Phenday Tshokpa Management System', date:'19 Jul 2026', status:'active'},
+  ];
+}
+
+function renderAdminAnnouncementsPage(mount, meta){
+  seedAnnouncementDatabase();
+  mount.innerHTML = `
+    <div class="ph-header">
+      <div><h2>${meta.title}</h2><div class="crumb">${meta.crumb}</div></div>
+    </div>
+    <div class="ph-card">
+      <div class="upload-panel-title">New Announcement</div>
+      <div class="bio-field full" style="margin-bottom:14px;">
+        <label>Announcement Text *</label>
+        <textarea id="ann-text" placeholder="e.g. Contribution deadline extended to 15 August 2026"></textarea>
+      </div>
+      <div class="bio-form-actions">
+        <button type="button" class="btn-primary" onclick="addAnnouncement()">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:6px;vertical-align:-3px;"><path d="M20 6L9 17l-5-5"></path></svg>
+          Post Announcement
+        </button>
+      </div>
+    </div>
+
+    <div class="ph-card" style="margin-top:16px;">
+      <div class="upload-panel-title">Live on Dashboard Ticker</div>
+      <p style="color:var(--muted);font-size:12.5px;margin:0 0 12px;">Active announcements scroll on the dashboard ticker in the order listed below. Set to Inactive to pull one down without deleting it.</p>
+      <table class="ph-table">
+        <thead><tr><th>Announcement</th><th>Date</th><th>Status</th><th>Action</th></tr></thead>
+        <tbody id="ann-table-body"></tbody>
+      </table>
+    </div>`;
+  renderAnnouncementTable();
+}
+
+function renderAnnouncementTable(){
+  const body = document.getElementById('ann-table-body');
+  if(!body) return;
+  if(announcementDatabase.length === 0){
+    body.innerHTML = `<tr><td colspan="4" style="text-align:center;color:var(--muted);padding:22px 8px;">No announcements yet.</td></tr>`;
+  } else {
+    body.innerHTML = announcementDatabase.map(a => `
+      <tr>
+        <td>${a.text}</td><td>${a.date}</td>
+        <td><span class="pill ${a.status}">${a.status.charAt(0).toUpperCase()+a.status.slice(1)}</span></td>
+        <td>
+          <button class="btn-sm" onclick="toggleAnnouncementStatus(${a.id})">${a.status==='active' ? 'Deactivate' : 'Activate'}</button>
+          <button class="btn-sm" style="background:#c0392b;" onclick="removeAnnouncement(${a.id})">Remove</button>
+        </td>
+      </tr>`).join('');
+  }
+  renderAnnouncementTicker();
+}
+
+function addAnnouncement(){
+  const text = document.getElementById('ann-text').value.trim();
+  if(!text) return;
+  const todayLabel = new Date().toLocaleDateString('en-US',{day:'2-digit',month:'short',year:'numeric'});
+  const newEntry = { id: Date.now(), text, date: todayLabel, status:'active' };
+  announcementDatabase.unshift(newEntry);
+  apiPost('/announcements', newEntry).catch(err => console.error('Failed to save announcement to backend:', err));
+  addNotification('Announcement published', text.length > 60 ? text.slice(0,60)+'…' : text, 'admin-announcements');
+  document.getElementById('ann-text').value = '';
+  renderAnnouncementTable();
+}
+
+function toggleAnnouncementStatus(id){
+  const a = announcementDatabase.find(x => x.id === id);
+  if(!a) return;
+  a.status = a.status === 'active' ? 'inactive' : 'active';
+  renderAnnouncementTable();
+}
+
+function removeAnnouncement(id){
+  announcementDatabase = announcementDatabase.filter(x => x.id !== id);
+  renderAnnouncementTable();
+}
+
+function renderAnnouncementTicker(){
+  seedAnnouncementDatabase();
+  const el = document.getElementById('announceTrackText');
+  if(!el) return;
+  const active = announcementDatabase.filter(a => a.status === 'active');
+  el.textContent = active.length
+    ? active.map(a => a.text).join('   •   ')
+    : 'Welcome to Bikhar Phenday Tshokpa Management System';
+}
+
+/* ===================== ADMINISTRATOR — Update Photos (dashboard hero banner) ===================== */
+let heroPhotoDatabase = null; // lazily seeded
+let heroActiveIndex = 0;
+let heroTimer = null;
+
+function seedHeroPhotoDatabase(){
+  if(heroPhotoDatabase) return;
+  heroPhotoDatabase = [
+    {id:1, url:'https://images.unsplash.com/photo-1544735716-392fe2489ffa?w=1200&q=80',
+     caption:'Annual General Meeting 2026', location:'Babena, Zhung Dratshang Guest House', date:'15 September 2026'},
+  ];
+}
+
+function renderAdminPhotosPage(mount, meta){
+  seedHeroPhotoDatabase();
+  mount.innerHTML = `
+    <div class="ph-header">
+      <div><h2>${meta.title}</h2><div class="crumb">${meta.crumb}</div></div>
+    </div>
+    <div class="ph-card">
+      <div class="upload-panel-title">Upload Dashboard Banner Photo</div>
+      <div class="bio-dropzone" id="hero-dropzone"
+           onclick="document.getElementById('hero-file-input').click()"
+           ondragover="handleHeroDragOver(event)" ondragleave="handleHeroDragLeave(event)" ondrop="handleHeroDrop(event)">
+        <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+        <div class="dz-title">Click to upload or drag &amp; drop a photo</div>
+        <div class="dz-sub">Shown in the rotating banner at the top of the Dashboard — JPG or PNG</div>
+        <input type="file" id="hero-file-input" accept="image/jpeg,image/png,image/jpg" style="display:none;" onchange="handleHeroFileChange(event)">
+      </div>
+      <div class="bio-file-list" id="hero-file-list"></div>
+
+      <div class="bio-form-grid" style="margin-top:16px;">
+        <div class="bio-field"><label>Caption / Title *</label><input type="text" id="hero-caption" placeholder="e.g. Annual General Meeting 2026"></div>
+        <div class="bio-field"><label>Location</label><input type="text" id="hero-location" placeholder="e.g. Babena, Zhung Dratshang Guest House"></div>
+        <div class="bio-field"><label>Date</label><input type="text" id="hero-date" placeholder="e.g. 15 September 2026"></div>
+      </div>
+      <div class="bio-form-actions">
+        <button type="button" class="btn-primary" onclick="addHeroPhoto()">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:6px;vertical-align:-3px;"><path d="M20 6L9 17l-5-5"></path></svg>
+          Add to Banner
+        </button>
+      </div>
+    </div>
+
+    <div class="ph-card" style="margin-top:16px;">
+      <div class="upload-panel-title">Current Banner Photos</div>
+      <div class="photo-grid" id="hero-photo-grid"></div>
+    </div>`;
+  renderHeroFileList();
+  renderHeroPhotoGrid();
+}
+
+let heroPendingFile = null;
+let heroPendingUrl = '';
+function handleHeroDragOver(e){ e.preventDefault(); document.getElementById('hero-dropzone').classList.add('dragover'); }
+function handleHeroDragLeave(e){ e.preventDefault(); document.getElementById('hero-dropzone').classList.remove('dragover'); }
+function handleHeroDrop(e){
+  e.preventDefault();
+  document.getElementById('hero-dropzone').classList.remove('dragover');
+  setHeroPendingFile(e.dataTransfer.files[0]);
+}
+function handleHeroFileChange(e){
+  setHeroPendingFile(e.target.files[0]);
+  e.target.value = '';
+}
+function setHeroPendingFile(file){
+  if(!file) return;
+  const isAccepted = ['image/jpeg','image/png','image/jpg'].includes(file.type) || /\.(jpe?g|png)$/i.test(file.name);
+  if(!isAccepted) return;
+  heroPendingFile = file;
+  heroPendingUrl = URL.createObjectURL(file);
+  renderHeroFileList();
+}
+function renderHeroFileList(){
+  const list = document.getElementById('hero-file-list');
+  if(!list) return;
+  if(!heroPendingFile){ list.innerHTML = ''; return; }
+  list.innerHTML = `
+    <div class="bio-file-chip">
+      <svg class="file-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+      <span class="file-name">${heroPendingFile.name}</span>
+      <span class="file-size">${formatFileSize(heroPendingFile.size)}</span>
+      <button type="button" class="file-remove" onclick="heroPendingFile=null; heroPendingUrl=''; renderHeroFileList();" title="Remove">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+      </button>
+    </div>`;
+}
+function addHeroPhoto(){
+  const caption = document.getElementById('hero-caption').value.trim();
+  const location = document.getElementById('hero-location').value.trim();
+  const date = document.getElementById('hero-date').value.trim();
+  if(!caption || !heroPendingUrl) return;
+  const newEntry = { id: Date.now(), url: heroPendingUrl, caption, location, date };
+  heroPhotoDatabase.push(newEntry);
+  apiPost('/photos', newEntry).catch(err => console.error('Failed to save photo to backend:', err));
+  ['hero-caption','hero-location','hero-date'].forEach(id=>{ document.getElementById(id).value=''; });
+  heroPendingFile = null;
+  heroPendingUrl = '';
+  renderHeroFileList();
+  renderHeroPhotoGrid();
+  renderHeroCarousel();
+}
+function removeHeroPhoto(id){
+  if(heroPhotoDatabase.length <= 1) return; // keep at least one banner photo
+  heroPhotoDatabase = heroPhotoDatabase.filter(p => p.id !== id);
+  heroActiveIndex = 0;
+  renderHeroPhotoGrid();
+  renderHeroCarousel();
+}
+function renderHeroPhotoGrid(){
+  const grid = document.getElementById('hero-photo-grid');
+  if(!grid) return;
+  grid.innerHTML = heroPhotoDatabase.map(p => `
+    <div class="photo-card">
+      <img class="pc-thumb" src="${p.url}" alt="${p.caption}">
+      <div class="pc-body">
+        <div class="pc-caption">${p.caption}</div>
+        <div class="pc-meta">${[p.location, p.date].filter(Boolean).join(' • ') || '—'}</div>
+        <button class="btn-sm" style="background:#c0392b;" onclick="removeHeroPhoto(${p.id})" ${heroPhotoDatabase.length<=1?'disabled title="At least one banner photo is required"':''}>Remove</button>
+      </div>
+    </div>`).join('');
+}
+
+/* ---- dashboard hero carousel — driven by heroPhotoDatabase ---- */
+function renderHeroCarousel(){
+  seedHeroPhotoDatabase();
+  const mount = document.getElementById('heroMount');
+  if(!mount) return;
+  if(heroActiveIndex >= heroPhotoDatabase.length) heroActiveIndex = 0;
+  const p = heroPhotoDatabase[heroActiveIndex];
+  const dots = heroPhotoDatabase.map((_,i) => `<span class="${i===heroActiveIndex?'on':''}" onclick="goHeroSlide(${i})"></span>`).join('');
+  mount.innerHTML = `
+    <div class="hero" style="background-image:url('${p.url}')">
+      <button class="hero-arrow" onclick="heroNextSlide()">‹</button>
+      <div class="hero-content">
+        <h2>${p.caption}</h2>
+        <div class="hero-meta">
+          ${p.location ? `<span>📍 ${p.location}</span>` : ''}
+          ${p.date ? `<span>📅 ${p.date}</span>` : ''}
+        </div>
+      </div>
+      <div class="hero-dots">${dots}</div>
+    </div>`;
+  restartHeroTimer();
+}
+function heroNextSlide(){
+  seedHeroPhotoDatabase();
+  heroActiveIndex = (heroActiveIndex + 1) % heroPhotoDatabase.length;
+  renderHeroCarousel();
+}
+function goHeroSlide(i){
+  heroActiveIndex = i;
+  renderHeroCarousel();
+}
+function restartHeroTimer(){
+  if(heroTimer) clearInterval(heroTimer);
+  if(heroPhotoDatabase.length > 1){
+    heroTimer = setInterval(heroNextSlide, 6000);
+  }
+}
+
+/* ===================== ADMINISTRATOR — Issue Credentials (staff & members) ===================== */
+let credentialsDatabase = null; // lazily seeded
+let credLookupMember = null;
+let credRecipientType = 'member';
+
+function seedCredentialsDatabase(){
+  if(credentialsDatabase) return;
+  credentialsDatabase = [];
+}
+
+function slugifyUsername(name){
+  return (name||'').trim().toLowerCase().replace(/[^a-z0-9]+/g,'.').replace(/^\.+|\.+$/g,'') || 'user';
+}
+function generatePassword(){
+  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789';
+  let out = '';
+  for(let i=0;i<8;i++){ out += chars[Math.floor(Math.random()*chars.length)]; }
+  return out;
+}
+
+function renderAdminCredentialsPage(mount, meta){
+  seedCredentialsDatabase();
+  credLookupMember = null;
+  credRecipientType = 'member';
+
+  mount.innerHTML = `
+    <div class="ph-header">
+      <div><h2>${meta.title}</h2><div class="crumb">${meta.crumb}</div></div>
+    </div>
+    <div class="ph-card">
+      <div class="upload-panel-title">Issue New Login</div>
+      <div class="type-toggle" id="cred-type-toggle">
+        <label class="on" id="cred-type-label-member"><input type="radio" name="cred-type" value="member" checked onchange="setCredRecipientType('member')"> Member</label>
+        <label id="cred-type-label-staff"><input type="radio" name="cred-type" value="staff" onchange="setCredRecipientType('staff')"> Staff</label>
+      </div>
+
+      <div id="cred-member-lookup">
+        <div class="claim-lookup-bar">
+          <div class="bio-field">
+            <label>Search Member by CID *</label>
+            <input type="text" id="cred-cid" maxlength="11" placeholder="Enter 11-digit CID"
+                   onkeydown="if(event.key==='Enter'){event.preventDefault();lookupCredMember();}">
+          </div>
+          <button type="button" class="btn-primary" onclick="lookupCredMember()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            Search
+          </button>
+        </div>
+        <div id="cred-lookup-result"></div>
+      </div>
+
+      <div id="cred-staff-fields" style="display:none;">
+        <div class="bio-form-grid">
+          <div class="bio-field"><label>Full Name *</label><input type="text" id="cred-staff-name" placeholder="e.g. Dechen Wangmo" oninput="suggestCredUsername()"></div>
+          <div class="bio-field"><label>Designation</label><input type="text" id="cred-staff-role" placeholder="e.g. Accountant"></div>
+        </div>
+      </div>
+
+      <div class="bio-form-section">Login Credentials</div>
+      <div class="bio-form-grid">
+        <div class="bio-field"><label>Username *</label><input type="text" id="cred-username" placeholder="auto-suggested from name"></div>
+        <div class="bio-field">
+          <label>Password *</label>
+          <div style="display:flex;gap:8px;">
+            <input type="text" id="cred-password" placeholder="auto-generated" style="flex:1;">
+            <button type="button" class="btn-outline" style="flex:none;padding:0 14px;" onclick="document.getElementById('cred-password').value=generatePassword();">Generate</button>
+          </div>
+        </div>
+      </div>
+      <div class="bio-form-actions">
+        <button type="button" class="btn-primary" onclick="issueCredential()">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:6px;vertical-align:-3px;"><path d="M20 6L9 17l-5-5"></path></svg>
+          Issue Login
+        </button>
+      </div>
+    </div>
+
+    <div class="ph-card" style="margin-top:16px;">
+      <div class="upload-panel-title">Issued Logins</div>
+      <table class="ph-table">
+        <thead><tr><th>Name</th><th>Type</th><th>Username</th><th>Password</th><th>Issued</th><th>Status</th><th>Access</th><th>Action</th></tr></thead>
+        <tbody id="cred-table-body"></tbody>
+      </table>
+    </div>`;
+
+  document.getElementById('cred-password').value = generatePassword();
+  renderCredLookupResult();
+  renderCredentialsTable();
+}
+
+function setCredRecipientType(type){
+  credRecipientType = type;
+  document.getElementById('cred-type-label-member').classList.toggle('on', type==='member');
+  document.getElementById('cred-type-label-staff').classList.toggle('on', type==='staff');
+  document.getElementById('cred-member-lookup').style.display = type==='member' ? 'block' : 'none';
+  document.getElementById('cred-staff-fields').style.display = type==='staff' ? 'block' : 'none';
+}
+
+function lookupCredMember(){
+  const cidInput = document.getElementById('cred-cid');
+  const cid = cidInput ? cidInput.value.trim() : '';
+  const found = cid
+    ? (memberDatabase.find(m => m.cid === cid) || memberDatabase.find(m => m.cid && m.cid.includes(cid)))
+    : null;
+  credLookupMember = found || null;
+  renderCredLookupResult();
+  if(found) suggestCredUsername();
+}
+
+function renderCredLookupResult(){
+  const resultEl = document.getElementById('cred-lookup-result');
+  if(!resultEl) return;
+  const m = credLookupMember;
+  const cidInput = document.getElementById('cred-cid');
+  const hasCid = cidInput && cidInput.value.trim();
+
+  if(!m){
+    resultEl.innerHTML = hasCid
+      ? `<div class="claim-lookup-result notfound">
+           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+           <div class="claim-lookup-info">
+             <div class="cl-name">No member found</div>
+             <div class="cl-sub">No member record matches that CID. Double-check the number or register the member first.</div>
+           </div>
+         </div>`
+      : `<div class="claim-lookup-result empty">Enter a CID and search to link this login to a member record.</div>`;
+    return;
+  }
+  const initial = (m.name || '?').trim().charAt(0).toUpperCase();
+  const avatar = m.photo ? `<img src="${m.photo}" alt="${m.name}">` : initial;
+  resultEl.innerHTML = `
+    <div class="claim-lookup-result found">
+      <div class="claim-lookup-avatar">${avatar}</div>
+      <div class="claim-lookup-info">
+        <div class="cl-name">${m.name}</div>
+        <div class="cl-sub">${m.id} &nbsp;•&nbsp; CID ${m.cid}</div>
+      </div>
+    </div>`;
+}
+
+function suggestCredUsername(){
+  const usernameEl = document.getElementById('cred-username');
+  if(!usernameEl || usernameEl.value.trim()) return; // don't overwrite a manually-typed username
+  const name = credRecipientType === 'member'
+    ? (credLookupMember ? credLookupMember.name : '')
+    : (document.getElementById('cred-staff-name') ? document.getElementById('cred-staff-name').value : '');
+  if(name) usernameEl.value = slugifyUsername(name);
+}
+
+function issueCredential(){
+  const resultEl = document.getElementById('cred-lookup-result');
+  let name, type, refId;
+
+  if(credRecipientType === 'member'){
+    if(!credLookupMember){
+      if(resultEl){
+        resultEl.innerHTML = `<div class="claim-lookup-result notfound">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+          <div class="claim-lookup-info"><div class="cl-name">Search a member first</div><div class="cl-sub">Search and confirm a member by CID before issuing a login.</div></div>
+        </div>`;
+      }
+      return;
+    }
+    name = credLookupMember.name;
+    type = 'Member';
+    refId = credLookupMember.id;
+  } else {
+    name = document.getElementById('cred-staff-name').value.trim();
+    if(!name) return;
+    type = 'Staff';
+    refId = '—';
+  }
+
+  const username = document.getElementById('cred-username').value.trim() || slugifyUsername(name);
+  const password = document.getElementById('cred-password').value.trim() || generatePassword();
+  const todayLabel = new Date().toLocaleDateString('en-US',{day:'2-digit',month:'short',year:'numeric'});
+
+  const newEntry = { id: Date.now(), name, type, refId, username, password, issued: todayLabel, status:'active', authorized:false, reveal:false };
+  credentialsDatabase.unshift(newEntry);
+  apiPost('/credentials', { name, type, refId, username, password, issued: todayLabel, status:'active', authorized:false })
+    .catch(err => console.error('Failed to save credential to backend:', err));
+  addNotification('Login credentials issued', `${type} account created for ${name} (${username})`, 'admin-credentials');
+
+  document.getElementById('cred-username').value = '';
+  document.getElementById('cred-password').value = generatePassword();
+  if(credRecipientType === 'member'){
+    document.getElementById('cred-cid').value = '';
+    credLookupMember = null;
+    renderCredLookupResult();
+  } else {
+    document.getElementById('cred-staff-name').value = '';
+    document.getElementById('cred-staff-role').value = '';
+  }
+  renderCredentialsTable();
+}
+
+function toggleCredReveal(id){
+  const c = credentialsDatabase.find(x => x.id === id);
+  if(!c) return;
+  c.reveal = !c.reveal;
+  renderCredentialsTable();
+}
+function resetCredPassword(id){
+  const c = credentialsDatabase.find(x => x.id === id);
+  if(!c) return;
+  c.password = generatePassword();
+  c.reveal = true;
+  renderCredentialsTable();
+}
+function toggleCredStatus(id){
+  const c = credentialsDatabase.find(x => x.id === id);
+  if(!c) return;
+  c.status = c.status === 'active' ? 'revoked' : 'active';
+  renderCredentialsTable();
+}
+function toggleCredAuthorized(id){
+  const c = credentialsDatabase.find(x => x.id === id);
+  if(!c) return;
+  c.authorized = !c.authorized;
+  apiPost('/credentials/authorize', { id: c.id, authorized: c.authorized }).catch(err => console.error('Failed to save authorization to backend:', err));
+  addNotification('Access updated', `${c.name} is now ${c.authorized ? 'authorized to edit' : 'view-only'}`, 'admin-credentials');
+  renderCredentialsTable();
+}
+
+function renderCredentialsTable(){
+  const body = document.getElementById('cred-table-body');
+  if(!body) return;
+  if(credentialsDatabase.length === 0){
+    body.innerHTML = `<tr><td colspan="8" style="text-align:center;color:var(--muted);padding:22px 8px;">No logins issued yet.</td></tr>`;
+    return;
+  }
+  body.innerHTML = credentialsDatabase.map(c => `
+    <tr>
+      <td>${c.name}</td><td>${c.type}</td><td>${c.username}</td>
+      <td>
+        <div class="pw-cell">
+          <span>${c.reveal ? c.password : '••••••••'}</span>
+          <button type="button" onclick="toggleCredReveal(${c.id})" title="${c.reveal?'Hide':'Show'} password">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+          </button>
+        </div>
+      </td>
+      <td>${c.issued}</td>
+      <td><span class="pill ${c.status}">${c.status.charAt(0).toUpperCase()+c.status.slice(1)}</span></td>
+      <td><span class="pill ${c.authorized ? 'active' : 'revoked'}">${c.authorized ? 'Can Edit' : 'View Only'}</span></td>
+      <td>
+        <button class="btn-sm" onclick="resetCredPassword(${c.id})">Reset</button>
+        <button class="btn-sm" style="background:${c.status==='active'?'#c0392b':'var(--green)'};" onclick="toggleCredStatus(${c.id})">${c.status==='active'?'Revoke':'Reactivate'}</button>
+        <button class="btn-sm" style="background:${c.authorized?'#c0392b':'var(--blue)'};" onclick="toggleCredAuthorized(${c.id})">${c.authorized?'Revoke Edit':'Authorize Edit'}</button>
+      </td>
+    </tr>`).join('');
+}
+
+/* ===================== ADMINISTRATOR — Login Settings (admin's own login) ===================== */
+let adminAuth = { username:'admin', password:'admin123' };
+
+function renderAdminLoginPage(mount, meta){
+  mount.innerHTML = `
+    <div class="ph-header">
+      <div><h2>${meta.title}</h2><div class="crumb">${meta.crumb}</div></div>
+    </div>
+    <div class="ph-card" style="max-width:520px;">
+      <div class="upload-panel-title">Administrator Login Credentials</div>
+      <p style="color:var(--muted);font-size:12.5px;margin:0 0 16px;">This username and password are used to sign in to this system on the login screen.</p>
+      <div class="bio-form-grid" style="grid-template-columns:1fr;">
+        <div class="bio-field"><label>Current Username</label><input type="text" id="alg-current-username" value="${adminAuth.username}" disabled></div>
+        <div class="bio-field"><label>New Username *</label><input type="text" id="alg-username" value="${adminAuth.username}"></div>
+        <div class="bio-field"><label>New Password *</label><input type="password" id="alg-password" placeholder="Enter new password"></div>
+        <div class="bio-field"><label>Confirm New Password *</label><input type="password" id="alg-password-confirm" placeholder="Re-enter new password"></div>
+      </div>
+      <div id="alg-msg" style="display:none;font-size:12.5px;font-weight:700;margin-top:4px;"></div>
+      <div class="bio-form-actions">
+        <button type="button" class="btn-primary" onclick="updateAdminLogin()">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:6px;vertical-align:-3px;"><path d="M20 6L9 17l-5-5"></path></svg>
+          Update Login
+        </button>
+      </div>
+    </div>`;
+}
+
+function updateAdminLogin(){
+  const username = document.getElementById('alg-username').value.trim();
+  const password = document.getElementById('alg-password').value;
+  const confirm = document.getElementById('alg-password-confirm').value;
+  const msg = document.getElementById('alg-msg');
+
+  const showMsg = (text, ok) => {
+    msg.textContent = text;
+    msg.style.color = ok ? 'var(--green)' : '#c0392b';
+    msg.style.display = 'block';
+  };
+
+  if(!username){ showMsg('Username cannot be empty.', false); return; }
+  if(!password || password.length < 6){ showMsg('Password must be at least 6 characters.', false); return; }
+  if(password !== confirm){ showMsg('Passwords do not match.', false); return; }
+
+  adminAuth = { username, password };
+  apiPost('/auth/admin', adminAuth).catch(err => console.error('Failed to save login credentials to backend:', err));
+
+  document.getElementById('alg-current-username').value = username;
+  document.getElementById('alg-username').value = username;
+  document.getElementById('alg-password').value = '';
+  document.getElementById('alg-password-confirm').value = '';
+  showMsg('Login credentials updated successfully.', true);
 }
 
 /* ---------- statement period filter ---------- */
