@@ -1,105 +1,110 @@
-# BPT backend
+# Bikhar Phenday Tshokpa Management System — Backend + Data
 
-A real backend for the Bikhar Phenday Tshokpa Management System: hashed
-passwords, JWT-based login, server-enforced permissions, and a persistent
-SQLite database. This replaces the earlier version where the admin
-password and all data lived only in the browser.
+This package adds a **real backend API** and **realistic sample data** to the
+dashboard you built (`bikhar-phenday-tshokpa-dashboard.html`). The frontend now
+fetches live data from the backend instead of using hardcoded arrays.
 
-## What this fixes
-
-- Passwords are hashed with bcrypt and never stored or compared in plain
-  text. The old hardcoded `admin123` in the page source is gone.
-- Login happens on the server (`POST /api/auth/login`) — the browser
-  never has the password to check against.
-- View-only vs edit-authorized access is enforced by the server on every
-  write request, not just hidden by the browser UI (which anyone with
-  dev tools could previously bypass).
-- Data (members, contributions, claims, assets, etc.) is stored in a
-  real SQLite database and survives restarts and redeploys, instead of
-  resetting every time the page reloads.
-
-## 1. Local setup
+## What's included
 
 ```
-cd backend
-npm install
-cp .env.example .env
+bpt-system/
+├── backend/
+│   ├── server.js          ← REST API (pure Node.js, no npm install needed)
+│   ├── generate-seed.js   ← regenerates data/db.json with fresh sample data
+│   └── data/db.json       ← the "database" (JSON file), auto-created/updated
+└── frontend/
+    └── index.html         ← your dashboard, wired to call the backend
 ```
 
-Open `.env` and set a real `JWT_SECRET` — generate one with:
+The backend has **zero external dependencies** — it only uses Node's built-in
+`http` and `fs` modules, so `npm install` isn't required and it will run
+anywhere Node.js is installed. Data is stored in `backend/data/db.json` and
+updated in place whenever a record is added through the UI (new member,
+contribution, management member, etc.) — so it persists across restarts.
+
+## How to run it
+
+**1. Start the backend** (from the `backend/` folder):
+
+```bash
+node server.js
 ```
-node -e "console.log(require('crypto').randomBytes(48).toString('hex'))"
+
+You should see: `BPT backend API running on http://localhost:4000`
+
+**2. Serve the frontend** (from the `frontend/` folder, in a second terminal):
+
+```bash
+python3 -m http.server 8080
+# or: npx serve .
 ```
-Leave `ADMIN_DEFAULT_PASSWORD` as-is or change it — this is only used the
-very first time the server starts, to create the initial admin account.
 
-Then:
+Then open **http://localhost:8080/index.html** in your browser and log in
+(the login screen is cosmetic — any input works). The dashboard will fetch
+live data from `http://localhost:4000/api` on login.
+
+> If you serve the frontend from a different host/port than `localhost:8080`,
+> or the backend from something other than `localhost:4000`, set
+> `window.BPT_API_BASE = 'http://your-backend-host:4000/api';` in a
+> `<script>` tag before the dashboard's main script runs.
+
+## The data
+
+`generate-seed.js` produced fictional but realistic sample data:
+
+- **62 members** across 10 dzongkhags (Thimphu, Paro, Punakha, Wangdue
+  Phodrang, Chukha, Samtse, Sarpang, Mongar, Trashigang, Bumthang) with full
+  bio-data (CID, DOB, occupation, emergency contact, etc.)
+- **156 contribution records** tied to real member IDs, with payment modes
+  (mBOB, Mpay, DrukPay, ePay, Tpay, DK, Cash)
+- **25 Semso claims** — 14 medical, 5 death, 6 other (disability, fire
+  damage, natural calamity, education support)
+- **Asset register** (office equipment, vehicles, land & building,
+  furniture), recent purchases and replacements
+- **Staff and other expense** records
+- **5-person management committee**
+- **Forms and reports** registry
+
+Dashboard stat cards, statements (individual & overall), and every
+placeholder table (contributions, semso, assets, expenses, forms, reports)
+now pull from this same dataset — so numbers are internally consistent
+(e.g. Overall Statement totals match the sum of individual contributions).
+
+To regenerate a fresh random dataset at any time:
+
+```bash
+cd backend && node generate-seed.js
 ```
-npm run seed    # populates demo data (safe to skip — server also runs fine empty)
-npm start
-```
 
-The API is now running at `http://localhost:4000/api`. Default admin
-login: username `admin`, password whatever you set in `.env`
-(`admin123` unless changed) — **change this immediately** via
-Administrator → Login Settings once you're logged in.
+## API endpoints
 
-## 2. Point the frontend at it
+| Method | Path | Description |
+|---|---|---|
+| GET | `/api/dashboard/stats` | Dashboard stat cards |
+| GET/POST | `/api/members` | List / add members (`?q=`, `?status=`, `?dzongkhag=` filters) |
+| GET/PUT | `/api/members/:id` | Get / update one member |
+| GET/POST | `/api/contributions` | List / add contributions |
+| PUT/DELETE | `/api/contributions/:id` | Edit / remove a contribution |
+| GET/POST | `/api/semso/:type` | `type` = `medical` \| `death` \| `other` |
+| GET | `/api/assets` | All asset data |
+| GET/POST | `/api/assets/purchases` | Purchases |
+| GET/POST | `/api/assets/replacements` | Replacements |
+| GET/POST | `/api/expenses/:type` | `type` = `staff` \| `other` |
+| GET/POST | `/api/management` | Committee members |
+| GET | `/api/forms` | Forms registry |
+| GET | `/api/reports` | Reports registry |
+| GET | `/api/statements/individual` | Per-member statement |
+| GET | `/api/statements/overall` | Organization-wide statement |
 
-In `index.html`, the frontend already reads `window.BPT_API_BASE`. For
-local testing, add this line right before the closing `</body>` tag (or
-anywhere before the main `<script>` block runs):
-```html
-<script>window.BPT_API_BASE = 'http://localhost:4000/api';</script>
-```
-For production, set it to your deployed backend's URL (see below).
+## Notes / next steps
 
-## 3. Deploy the backend on Render
-
-1. Push the `backend/` folder to a GitHub repo (can be the same repo as
-   your frontend, or a separate one).
-2. In the Render dashboard: **New +** → **Web Service** → connect the repo.
-3. Settings:
-   - **Root directory**: `backend` (if it's in the same repo as the frontend)
-   - **Build command**: `npm install`
-   - **Start command**: `npm start`
-4. Under **Environment**, add:
-   - `JWT_SECRET` — your generated secret
-   - `ADMIN_DEFAULT_PASSWORD` — a password for first login
-   - `FRONTEND_ORIGINS` — your static site's URL, e.g. `https://your-site.onrender.com`
-5. Deploy. Render gives you a URL like `https://bpt-backend.onrender.com`.
-6. Back in your frontend's `index.html`, set:
-   ```html
-   <script>window.BPT_API_BASE = 'https://bpt-backend.onrender.com/api';</script>
-   ```
-   Commit and push — Render redeploys the static site automatically.
-
-### Important: persistent storage on Render
-
-SQLite writes to a file on local disk. Render's **free** web services have
-an *ephemeral* filesystem — the database file is wiped on every redeploy.
-For real production use, do one of:
-
-- Attach a **persistent disk** to the backend service (requires a paid
-  instance type) and point the SQLite file at that disk's mount path, or
-- Migrate to **Render Postgres** (a managed database) instead of SQLite —
-  more involved, but the right call if this will hold real member/financial
-  data long-term. Ask me and I can help convert `db.js` to Postgres.
-
-For now (testing/demo), the free ephemeral setup is fine — just know that
-data resets on each backend redeploy until one of the above is in place.
-
-## API overview
-
-- `POST /api/auth/login` — public. Returns a session token.
-- `POST /api/auth/admin` — admin only. Changes admin username/password.
-- `GET/POST /api/credentials*` — admin only. Issue/manage member & staff logins.
-- `GET /api/dashboard/stats` — any logged-in user.
-- `GET /api/members`, `/management`, `/contributions`, `/semso/*`,
-  `/assets`, `/expenses/*`, `/forms`, `/reports`, `/statements/*`,
-  `/vision-mission`, `/announcements`, `/photos` — any logged-in user (read),
-  admin or authorized staff/member (write via POST).
-
-Every write endpoint requires a valid token AND (admin OR
-`authorized: true` on that account) — enforced in
-`middleware/auth.js`, not just in the browser.
+- This is an in-memory-JSON-file "database" — fine for a demo or single-user
+  setup, but for real production use with multiple concurrent users, swap
+  `backend/data/db.json` for a proper database (Postgres, SQLite via
+  `better-sqlite3`, etc.) — the API surface in `server.js` is written so
+  that swap only touches the `readDB`/`writeDB` functions.
+- There's no authentication on the API yet — the login screen in the
+  frontend is cosmetic. Add real auth (e.g. sessions or JWT) before
+  exposing this beyond localhost.
+- All names, CIDs, and figures are fictional/generated — replace with your
+  Tshokpa's actual member records when you're ready to go live.
