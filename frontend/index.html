@@ -1167,30 +1167,35 @@ function doLogin(){
   const username = document.getElementById('username').value.trim();
   const password = document.getElementById('password').value;
   const errorEl = document.getElementById('loginError');
+  const loginBtn = document.querySelector('.btn-login');
 
-  if(username === adminAuth.username && password === adminAuth.password){
-    if(errorEl) errorEl.classList.remove('show');
-    setSessionAndEnterApp({ role:'admin', authorized:true, name:'Administrator', username, refId:null });
+  if(!username || !password){
+    if(errorEl){ errorEl.textContent = 'Enter your username and password.'; errorEl.classList.add('show'); }
     return;
   }
+  if(loginBtn) loginBtn.disabled = true;
 
-  if(typeof seedCredentialsDatabase === 'function') seedCredentialsDatabase();
-  const issued = (credentialsDatabase || []).find(c =>
-    c.username === username && c.password === password && c.status === 'active'
-  );
-  if(issued){
+  fetch(`${API_BASE}/auth/login`, {
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({ username, password })
+  })
+  .then(async res => {
+    const body = await res.json().catch(()=>({}));
+    if(!res.ok) throw new Error(body.error || 'Incorrect username or password.');
+    return body;
+  })
+  .then(session => {
     if(errorEl) errorEl.classList.remove('show');
+    authToken = session.token;
     setSessionAndEnterApp({
-      role: issued.type === 'Staff' ? 'staff' : 'member',
-      authorized: !!issued.authorized,
-      name: issued.name,
-      username: issued.username,
-      refId: issued.refId
+      role: session.role, authorized: session.authorized, name: session.name,
+      username: session.username, refId: session.refId
     });
-    return;
-  }
-
-  if(errorEl) errorEl.classList.add('show');
+  })
+  .catch(err => {
+    if(errorEl){ errorEl.textContent = err.message || 'Incorrect username or password. Please try again.'; errorEl.classList.add('show'); }
+  })
+  .finally(() => { if(loginBtn) loginBtn.disabled = false; });
 }
 function backToLogin(){
   if(heroTimer) clearInterval(heroTimer);
@@ -1199,6 +1204,7 @@ function backToLogin(){
   document.getElementById('logoutSuccessModal').style.display='none';
   document.getElementById('appScreen').style.display='none';
   document.getElementById('loginScreen').style.display='flex';
+  authToken = null;
   currentSession = { role:'admin', authorized:true, name:'Administrator', username:'admin', refId:null };
 }
 
@@ -1338,23 +1344,36 @@ let memberDatabase = [];
    ============================================================ */
 const API_BASE = window.BPT_API_BASE || 'http://localhost:4000/api';
 
+let authToken = null; // set on login, cleared on logout — never written to localStorage in this build
+
+function authHeaders(){
+  return authToken ? { 'Authorization': `Bearer ${authToken}` } : {};
+}
+async function parseApiError(res, verb, path){
+  let message = `${verb} ${path} failed: ${res.status}`;
+  try{
+    const body = await res.json();
+    if(body && body.error) message = body.error;
+  }catch(e){}
+  return new Error(message);
+}
 async function apiGet(path){
-  const res = await fetch(`${API_BASE}${path}`);
-  if(!res.ok) throw new Error(`GET ${path} failed: ${res.status}`);
+  const res = await fetch(`${API_BASE}${path}`, { headers: authHeaders() });
+  if(!res.ok) throw await parseApiError(res, 'GET', path);
   return res.json();
 }
 async function apiPost(path, body){
   const res = await fetch(`${API_BASE}${path}`, {
-    method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(body)
+    method:'POST', headers:{'Content-Type':'application/json', ...authHeaders()}, body: JSON.stringify(body)
   });
-  if(!res.ok) throw new Error(`POST ${path} failed: ${res.status}`);
+  if(!res.ok) throw await parseApiError(res, 'POST', path);
   return res.json();
 }
 async function apiPut(path, body){
   const res = await fetch(`${API_BASE}${path}`, {
-    method:'PUT', headers:{'Content-Type':'application/json'}, body: JSON.stringify(body)
+    method:'PUT', headers:{'Content-Type':'application/json', ...authHeaders()}, body: JSON.stringify(body)
   });
-  if(!res.ok) throw new Error(`PUT ${path} failed: ${res.status}`);
+  if(!res.ok) throw await parseApiError(res, 'PUT', path);
   return res.json();
 }
 
@@ -3892,27 +3911,25 @@ function restartHeroTimer(){
 }
 
 /* ===================== ADMINISTRATOR — Issue Credentials (staff & members) ===================== */
-let credentialsDatabase = null; // lazily seeded
+let credentialsDatabase = [];
 let credLookupMember = null;
 let credRecipientType = 'member';
-
-function seedCredentialsDatabase(){
-  if(credentialsDatabase) return;
-  credentialsDatabase = [];
-}
 
 function slugifyUsername(name){
   return (name||'').trim().toLowerCase().replace(/[^a-z0-9]+/g,'.').replace(/^\.+|\.+$/g,'') || 'user';
 }
-function generatePassword(){
-  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789';
-  let out = '';
-  for(let i=0;i<8;i++){ out += chars[Math.floor(Math.random()*chars.length)]; }
-  return out;
+
+async function loadCredentialsFromBackend(){
+  try{
+    const rows = await apiGet('/credentials');
+    credentialsDatabase = rows.map(r => ({ ...r, reveal:false })); // password never included except right after issue/reset
+  }catch(err){
+    console.error('Failed to load issued logins from backend:', err);
+  }
+  renderCredentialsTable();
 }
 
 function renderAdminCredentialsPage(mount, meta){
-  seedCredentialsDatabase();
   credLookupMember = null;
   credRecipientType = 'member';
 
@@ -3952,14 +3969,9 @@ function renderAdminCredentialsPage(mount, meta){
       <div class="bio-form-section">Login Credentials</div>
       <div class="bio-form-grid">
         <div class="bio-field"><label>Username *</label><input type="text" id="cred-username" placeholder="auto-suggested from name"></div>
-        <div class="bio-field">
-          <label>Password *</label>
-          <div style="display:flex;gap:8px;">
-            <input type="text" id="cred-password" placeholder="auto-generated" style="flex:1;">
-            <button type="button" class="btn-outline" style="flex:none;padding:0 14px;" onclick="document.getElementById('cred-password').value=generatePassword();">Generate</button>
-          </div>
-        </div>
       </div>
+      <p style="color:var(--muted);font-size:12px;margin:2px 0 0;">A secure random password is generated by the server when you issue the login — it's shown once below, then never displayed again.</p>
+      <div id="cred-issue-msg" style="display:none;font-size:12.5px;font-weight:700;margin-top:10px;"></div>
       <div class="bio-form-actions">
         <button type="button" class="btn-primary" onclick="issueCredential()">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:6px;vertical-align:-3px;"><path d="M20 6L9 17l-5-5"></path></svg>
@@ -3972,13 +3984,12 @@ function renderAdminCredentialsPage(mount, meta){
       <div class="upload-panel-title">Issued Logins</div>
       <table class="ph-table">
         <thead><tr><th>Name</th><th>Type</th><th>Username</th><th>Password</th><th>Issued</th><th>Status</th><th>Access</th><th>Action</th></tr></thead>
-        <tbody id="cred-table-body"></tbody>
+        <tbody id="cred-table-body"><tr><td colspan="8" style="text-align:center;color:var(--muted);padding:22px 8px;">Loading…</td></tr></tbody>
       </table>
     </div>`;
 
-  document.getElementById('cred-password').value = generatePassword();
   renderCredLookupResult();
-  renderCredentialsTable();
+  loadCredentialsFromBackend();
 }
 
 function setCredRecipientType(type){
@@ -4040,7 +4051,15 @@ function suggestCredUsername(){
   if(name) usernameEl.value = slugifyUsername(name);
 }
 
-function issueCredential(){
+function showCredMsg(text, ok){
+  const msg = document.getElementById('cred-issue-msg');
+  if(!msg) return;
+  msg.textContent = text;
+  msg.style.color = ok ? 'var(--green)' : '#c0392b';
+  msg.style.display = 'block';
+}
+
+async function issueCredential(){
   const resultEl = document.getElementById('cred-lookup-result');
   let name, type, refId;
 
@@ -4065,17 +4084,18 @@ function issueCredential(){
   }
 
   const username = document.getElementById('cred-username').value.trim() || slugifyUsername(name);
-  const password = document.getElementById('cred-password').value.trim() || generatePassword();
-  const todayLabel = new Date().toLocaleDateString('en-US',{day:'2-digit',month:'short',year:'numeric'});
 
-  const newEntry = { id: Date.now(), name, type, refId, username, password, issued: todayLabel, status:'active', authorized:false, reveal:false };
-  credentialsDatabase.unshift(newEntry);
-  apiPost('/credentials', { name, type, refId, username, password, issued: todayLabel, status:'active', authorized:false })
-    .catch(err => console.error('Failed to save credential to backend:', err));
-  addNotification('Login credentials issued', `${type} account created for ${name} (${username})`, 'admin-credentials');
+  try{
+    const created = await apiPost('/credentials', { name, type, refId, username });
+    credentialsDatabase.unshift({ ...created, reveal:true });
+    showCredMsg(`Login issued. Password (shown once): ${created.password} — copy it now, it can't be retrieved again.`, true);
+    addNotification('Login credentials issued', `${type} account created for ${name} (${username})`, 'admin-credentials');
+  }catch(err){
+    showCredMsg(err.message || 'Failed to issue login.', false);
+    return;
+  }
 
   document.getElementById('cred-username').value = '';
-  document.getElementById('cred-password').value = generatePassword();
   if(credRecipientType === 'member'){
     document.getElementById('cred-cid').value = '';
     credLookupMember = null;
@@ -4089,29 +4109,47 @@ function issueCredential(){
 
 function toggleCredReveal(id){
   const c = credentialsDatabase.find(x => x.id === id);
-  if(!c) return;
+  if(!c || !c.password) return; // nothing to reveal once the password has left the response — use Reset instead
   c.reveal = !c.reveal;
   renderCredentialsTable();
 }
-function resetCredPassword(id){
-  const c = credentialsDatabase.find(x => x.id === id);
-  if(!c) return;
-  c.password = generatePassword();
-  c.reveal = true;
+
+async function resetCredPassword(id){
+  try{
+    const result = await apiPost('/credentials/reset', { id });
+    const c = credentialsDatabase.find(x => x.id === id);
+    if(c){ c.password = result.password; c.reveal = true; }
+    showCredMsg(`New password (shown once): ${result.password} — copy it now.`, true);
+  }catch(err){
+    showCredMsg(err.message || 'Failed to reset password.', false);
+  }
   renderCredentialsTable();
 }
-function toggleCredStatus(id){
+
+async function toggleCredStatus(id){
   const c = credentialsDatabase.find(x => x.id === id);
   if(!c) return;
-  c.status = c.status === 'active' ? 'revoked' : 'active';
+  const newStatus = c.status === 'active' ? 'revoked' : 'active';
+  try{
+    await apiPost('/credentials/status', { id, status: newStatus });
+    c.status = newStatus;
+  }catch(err){
+    showCredMsg(err.message || 'Failed to update status.', false);
+  }
   renderCredentialsTable();
 }
-function toggleCredAuthorized(id){
+
+async function toggleCredAuthorized(id){
   const c = credentialsDatabase.find(x => x.id === id);
   if(!c) return;
-  c.authorized = !c.authorized;
-  apiPost('/credentials/authorize', { id: c.id, authorized: c.authorized }).catch(err => console.error('Failed to save authorization to backend:', err));
-  addNotification('Access updated', `${c.name} is now ${c.authorized ? 'authorized to edit' : 'view-only'}`, 'admin-credentials');
+  const next = !c.authorized;
+  try{
+    await apiPost('/credentials/authorize', { id, authorized: next });
+    c.authorized = next;
+    addNotification('Access updated', `${c.name} is now ${c.authorized ? 'authorized to edit' : 'view-only'}`, 'admin-credentials');
+  }catch(err){
+    showCredMsg(err.message || 'Failed to update access.', false);
+  }
   renderCredentialsTable();
 }
 
@@ -4127,10 +4165,10 @@ function renderCredentialsTable(){
       <td>${c.name}</td><td>${c.type}</td><td>${c.username}</td>
       <td>
         <div class="pw-cell">
-          <span>${c.reveal ? c.password : '••••••••'}</span>
-          <button type="button" onclick="toggleCredReveal(${c.id})" title="${c.reveal?'Hide':'Show'} password">
+          <span>${c.password ? (c.reveal ? c.password : '••••••••') : '(hidden — use Reset)'}</span>
+          ${c.password ? `<button type="button" onclick="toggleCredReveal(${c.id})" title="${c.reveal?'Hide':'Show'} password">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"></path><circle cx="12" cy="12" r="3"></circle></svg>
-          </button>
+          </button>` : ''}
         </div>
       </td>
       <td>${c.issued}</td>
@@ -4145,8 +4183,6 @@ function renderCredentialsTable(){
 }
 
 /* ===================== ADMINISTRATOR — Login Settings (admin's own login) ===================== */
-let adminAuth = { username:'admin', password:'admin123' };
-
 function renderAdminLoginPage(mount, meta){
   mount.innerHTML = `
     <div class="ph-header">
@@ -4156,8 +4192,8 @@ function renderAdminLoginPage(mount, meta){
       <div class="upload-panel-title">Administrator Login Credentials</div>
       <p style="color:var(--muted);font-size:12.5px;margin:0 0 16px;">This username and password are used to sign in to this system on the login screen.</p>
       <div class="bio-form-grid" style="grid-template-columns:1fr;">
-        <div class="bio-field"><label>Current Username</label><input type="text" id="alg-current-username" value="${adminAuth.username}" disabled></div>
-        <div class="bio-field"><label>New Username *</label><input type="text" id="alg-username" value="${adminAuth.username}"></div>
+        <div class="bio-field"><label>Current Username</label><input type="text" id="alg-current-username" value="${currentSession.username}" disabled></div>
+        <div class="bio-field"><label>New Username *</label><input type="text" id="alg-username" value="${currentSession.username}"></div>
         <div class="bio-field"><label>New Password *</label><input type="password" id="alg-password" placeholder="Enter new password"></div>
         <div class="bio-field"><label>Confirm New Password *</label><input type="password" id="alg-password-confirm" placeholder="Re-enter new password"></div>
       </div>
@@ -4171,7 +4207,7 @@ function renderAdminLoginPage(mount, meta){
     </div>`;
 }
 
-function updateAdminLogin(){
+async function updateAdminLogin(){
   const username = document.getElementById('alg-username').value.trim();
   const password = document.getElementById('alg-password').value;
   const confirm = document.getElementById('alg-password-confirm').value;
@@ -4187,14 +4223,18 @@ function updateAdminLogin(){
   if(!password || password.length < 6){ showMsg('Password must be at least 6 characters.', false); return; }
   if(password !== confirm){ showMsg('Passwords do not match.', false); return; }
 
-  adminAuth = { username, password };
-  apiPost('/auth/admin', adminAuth).catch(err => console.error('Failed to save login credentials to backend:', err));
-
-  document.getElementById('alg-current-username').value = username;
-  document.getElementById('alg-username').value = username;
-  document.getElementById('alg-password').value = '';
-  document.getElementById('alg-password-confirm').value = '';
-  showMsg('Login credentials updated successfully.', true);
+  try{
+    await apiPost('/auth/admin', { username, password });
+    currentSession.username = username;
+    const chipName = document.getElementById('profileChipName');
+    if(chipName) chipName.textContent = currentSession.name + ' ▾';
+    document.getElementById('alg-current-username').value = username;
+    document.getElementById('alg-password').value = '';
+    document.getElementById('alg-password-confirm').value = '';
+    showMsg('Login credentials updated successfully. Use the new username/password next time you log in.', true);
+  }catch(err){
+    showMsg(err.message || 'Failed to update login credentials.', false);
+  }
 }
 
 /* ---------- statement period filter ---------- */
