@@ -367,6 +367,10 @@
   .pill.active{background:#e4f4e7;color:var(--green);}
   .pill.pending{background:#fdf1de;color:var(--orange);}
   .pill.resigned{background:#fbe6e6;color:#c0392b;}
+  .pill.rejected{background:#fbe6e6;color:#c0392b;}
+  .btn-approve{background:var(--green)!important;}
+  .btn-reject{background:#c0392b!important;}
+  .action-btn-group{display:flex;gap:6px;flex-wrap:wrap;}
 
   /* Statement filter bar */
   .stmt-filter-bar{
@@ -542,18 +546,76 @@
   @media (max-width:900px){ .md-grid{grid-template-columns:repeat(2,1fr);} }
   @media (max-width:600px){ .md-grid{grid-template-columns:1fr;} }
 
-  /* ---------- Management grid ---------- */
+  /* ---------- Management grid (legacy flat cards — kept for narrow layouts) ---------- */
   .mgmt-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:18px;}
   .mgmt-card{
     border:1px solid var(--line);border-radius:var(--radius);
     padding:18px 14px;text-align:center;background:#fff;
+    position:relative;
   }
   .mgmt-card .md-avatar{margin:0 auto 10px;}
   .mgmt-card .mc-name{font-size:14px;font-weight:800;color:var(--ink);}
   .mgmt-card .mc-role{font-size:12px;color:var(--maroon-700);font-weight:700;margin:3px 0 6px;}
   .mgmt-card .mc-contact{font-size:11.5px;color:var(--muted);}
+  .mgmt-card .mc-remove{
+    position:absolute;top:8px;right:8px;
+    width:22px;height:22px;border-radius:50%;
+    background:#fbe6e6;color:#c0392b;border:none;
+    display:flex;align-items:center;justify-content:center;
+    font-size:13px;font-weight:800;line-height:1;
+  }
+  .mgmt-card .mc-remove:hover{background:#c0392b;color:#fff;}
   @media (max-width:900px){ .mgmt-grid{grid-template-columns:repeat(2,1fr);} }
   @media (max-width:600px){ .mgmt-grid{grid-template-columns:1fr;} }
+
+  /* ---------- Management org chart (hierarchical tree) ---------- */
+  .org-chart-scroll{width:100%;overflow-x:auto;padding-bottom:6px;}
+  .org-tree, .org-tree ul{
+    padding-top:22px;position:relative;
+    display:flex;justify-content:center;
+  }
+  .org-tree ul{ padding-top:32px; }
+  .org-tree li{
+    display:flex;flex-direction:column;align-items:center;
+    list-style-type:none;position:relative;
+    padding:32px 14px 0 14px;
+  }
+  .org-tree li::before, .org-tree li::after{
+    content:'';position:absolute;top:0;right:50%;
+    border-top:2px solid var(--maroon-600);width:50%;height:32px;
+  }
+  .org-tree li::after{ right:auto;left:50%;border-left:2px solid var(--maroon-600); }
+  .org-tree li:only-child::after, .org-tree li:only-child::before{ display:none; }
+  .org-tree li:only-child{ padding-top:0; }
+  .org-tree > li{ padding-top:0; }
+  .org-tree > li::before, .org-tree > li::after{ display:none; }
+  .org-tree li:first-child::before, .org-tree li:last-child::after{ border:0 none; }
+  .org-tree li:last-child::before{ border-right:2px solid var(--maroon-600);border-radius:0 6px 0 0; }
+  .org-tree li:first-child::after{ border-radius:6px 0 0 0; }
+  .org-tree ul ul::before{
+    content:'';position:absolute;top:0;left:50%;
+    border-left:2px solid var(--maroon-600);width:0;height:22px;
+  }
+  .org-node{
+    display:inline-flex;flex-direction:column;align-items:center;
+    border:1.5px solid var(--line);border-radius:var(--radius);
+    background:#fff;padding:14px 16px;min-width:140px;
+    box-shadow:var(--shadow);position:relative;
+  }
+  .org-node.head-node{ border-color:var(--gold-dark);background:linear-gradient(180deg,#fffdf6,#fff); }
+  .org-node .md-avatar{ width:52px;height:52px;font-size:18px;margin:0 0 8px; }
+  .org-node .mc-name{ font-size:13.5px;font-weight:800;color:var(--ink);text-align:center; }
+  .org-node .mc-role{ font-size:11.5px;color:var(--maroon-700);font-weight:700;margin:2px 0 4px;text-align:center; }
+  .org-node .mc-contact{ font-size:11px;color:var(--muted);text-align:center; }
+  .org-node .mc-remove{
+    position:absolute;top:-8px;right:-8px;
+    width:22px;height:22px;border-radius:50%;
+    background:#fbe6e6;color:#c0392b;border:1.5px solid #fff;
+    display:flex;align-items:center;justify-content:center;
+    font-size:13px;font-weight:800;line-height:1;box-shadow:0 2px 6px rgba(0,0,0,0.15);
+  }
+  .org-node .mc-remove:hover{ background:#c0392b;color:#fff; }
+  .org-empty-note{color:var(--muted);font-size:12.5px;padding:10px 2px;}
 
   /* ===================== ADMINISTRATOR — photo gallery ===================== */
   .photo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:18px;}
@@ -566,6 +628,19 @@
   .photo-card .pc-meta{font-size:11.5px;color:var(--muted);margin-bottom:8px;}
   @media (max-width:900px){ .photo-grid{grid-template-columns:repeat(2,1fr);} }
   @media (max-width:600px){ .photo-grid{grid-template-columns:1fr;} }
+
+  /* ---------- Banner photo marquee (auto-scrolling strip) ---------- */
+  .marquee-viewport{
+    width:100%;overflow:hidden;margin-top:18px;
+    mask-image:linear-gradient(90deg, transparent, #000 4%, #000 96%, transparent);
+    -webkit-mask-image:linear-gradient(90deg, transparent, #000 4%, #000 96%, transparent);
+  }
+  .marquee-track{ display:flex;width:max-content; animation:marquee-scroll 32s linear infinite; }
+  .marquee-viewport:hover .marquee-track{ animation-play-state:paused; }
+  .marquee-content{ display:flex;gap:16px;padding-right:16px; }
+  .marquee-content .photo-card{ width:230px;flex:none; }
+  @keyframes marquee-scroll{ from{ transform:translateX(0); } to{ transform:translateX(-50%); } }
+  @media (prefers-reduced-motion: reduce){ .marquee-track{ animation:none; } }
 
   /* ===================== ADMINISTRATOR — recipient type toggle ===================== */
   .type-toggle{display:flex;gap:10px;margin-bottom:16px;}
@@ -860,7 +935,7 @@
         <div class="submenu" id="sub-contrib">
           <a data-page="contrib-add" onclick="goPage('contrib-add', this)">Add Contributions</a>
           <a data-page="contrib-edit" onclick="goPage('contrib-edit', this)">Edit Contributions</a>
-          <a data-page="contrib-remove" onclick="goPage('contrib-remove', this)">Remove Contributions</a>
+          <a data-page="contrib-remove" onclick="goPage('contrib-remove', this)">View Contributions</a>
         </div>
       </div>
 
@@ -1073,7 +1148,7 @@ const VIEW_ONLY_SAFE_ACTIONS = new Set([
   'downloadReportPDF','downloadStatementPDF',
   'markAllNotificationsRead','openNotification','showMemberDetail','hideBioSuccess',
   'toggleAssetForm','toggleAssetsTotalForm','toggleExpForm','toggleVmEdit',
-  'cancelContribEdit','cancelRemoveContrib',
+  'cancelContribEdit','viewContribDetail','closeContribDetail',
   'openLogoutModal','closeLogoutModal','confirmLogout','backToLogin'
 ]);
 
@@ -1327,7 +1402,7 @@ const pageMeta = {
   'members-resigned': {title:'Resigned Member', crumb:'Home / Members / Resigned Member', table:['Member ID','Name','Resigned Date','Reason','Status'], rows:[['MBR-0067','Yeshi Dema','12 Mar 2026','Personal','resigned'],['MBR-0102','Karma Tenzin','02 May 2026','Relocation','resigned']]},
   'contrib-add': {title:'Add Contributions', crumb:'Home / Contributions / Add Contributions', table:['Member','Amount (Nu.)','Date','Type','Status'], rows:[['Sonam Wangchuk','1,000','19 Jul 2026','Annual','active'],['Pema Lhamo','1,000','19 Jul 2026','Annual','pending']]},
   'contrib-edit': {title:'Edit Contributions', crumb:'Home / Contributions / Edit Contributions', table:['Member','Amount (Nu.)','Date','Type','Status'], rows:[['Tshering Dorji','1,200','10 Jul 2026','Annual','active']]},
-  'contrib-remove': {title:'Remove Contributions', crumb:'Home / Contributions / Remove Contributions', table:['Member','Amount (Nu.)','Date','Reason','Status'], rows:[['Kinley Zangmo','800','01 Jun 2026','Duplicate entry','pending']]},
+  'contrib-remove': {title:'View Contributions', crumb:'Home / Contributions / View Contributions', table:['Member','Amount (Nu.)','Date','Reason','Status'], rows:[['Kinley Zangmo','800','01 Jun 2026','Duplicate entry','pending']]},
   'semso-medical': {title:'Medical Claim', crumb:'Home / Semso / Medical Claim', table:['CID','Member','Amount (Nu.)','Hospital','Date Filed','Status'], rows:[['10905033512','Ugyen Tenzin','15,000','JDWNRH Thimphu','05 Jul 2026','pending'],['10903022477','Karma Wangmo','8,500','Mongar Hospital','28 Jun 2026','active']]},
   'semso-death': {title:'Death Claim', crumb:'Home / Semso / Death Claim', table:['CID','Deceased','Claimant','Amount (Nu.)','Date Filed','Status'], rows:[['10901011234','Dorji Norbu','Sonam Dema','50,000','15 Jun 2026','active']]},
   'semso-other': {title:'Other Claim', crumb:'Home / Semso / Other Claim', table:['CID','Member','Claim Type','Amount (Nu.)','Date Filed','Status'], rows:[['10906044321','Pema Choden','Disability Support','12,000','20 May 2026','pending']]},
@@ -1390,6 +1465,13 @@ async function apiPut(path, body){
   if(!res.ok) throw await parseApiError(res, 'PUT', path);
   return res.json();
 }
+async function apiDelete(path){
+  const res = await fetch(`${API_BASE}${path}`, {
+    method:'DELETE', headers:{ ...authHeaders() }
+  });
+  if(!res.ok) throw await parseApiError(res, 'DELETE', path);
+  return res.json().catch(()=>({}));
+}
 
 function fmtMoney(n){ return Number(n||0).toLocaleString('en-US'); }
 function fmtAssetValue(n){
@@ -1432,14 +1514,19 @@ async function loadAllData(){
 
     /* ---- management committee ---- */
     managementDatabase.length = 0;
-    mgmt.forEach(m => managementDatabase.push(m));
+    mgmt.forEach((m,i) => managementDatabase.push({
+      id: m.id || m._id || (Date.now()+i),
+      reportsTo: (m.reportsTo === undefined ? null : m.reportsTo),
+      ...m
+    }));
 
     /* ---- contributions (add/edit/remove all read from the same ledger) ---- */
     const contribRows = contribs.map(c => [c.member, fmtMoney(c.amount), c.dateLabel || c.date, c.type, c.status]);
     pageMeta['contrib-add'].rows = contribRows;
     pageMeta['contrib-edit'].rows = contribRows;
     pageMeta['contrib-remove'].rows = contribRows.map((r,i)=>[r[0], r[1], r[2], 'Duplicate entry', contribs[i].status]);
-    contribDatabase = contribs.map(c => ({
+    contribDatabase = contribs.map((c,i) => ({
+      id: c.id || c._id || (Date.now()+i),
       date: c.dateLabel || c.date, cid: c.cid || (memberDatabase.find(m=>m.id===c.memberId)||{}).cid || '',
       member: c.member, memberId: c.memberId || '', amount: fmtMoney(c.amount), mode: c.mode || 'Cash',
       journal: c.journal || '—', period: c.period || (c.date||'').slice(0,4) || '2026', screenshot: '', status: c.status,
@@ -1829,7 +1916,7 @@ function renderMemberSearch(mount, meta){
     <div class="ph-card" style="margin-top:16px;">
       <div class="member-search-count" id="member-result-count"></div>
       <table class="ph-table">
-        <thead><tr><th>Member ID</th><th>Name</th><th>CID</th><th>Village</th><th>Joined</th><th>Status</th></tr></thead>
+        <thead><tr><th>Member ID</th><th>Name</th><th>CID</th><th>Village</th><th>Joined</th><th>Status</th><th>Action</th></tr></thead>
         <tbody id="member-result-body"></tbody>
       </table>
     </div>
@@ -1844,16 +1931,21 @@ function renderMemberResultRows(list){
   if(!body) return;
 
   if(list.length === 0){
-    body.innerHTML = `<tr><td colspan="6" style="text-align:center;color:var(--muted);padding:22px 8px;">No members matched your search.</td></tr>`;
+    body.innerHTML = `<tr><td colspan="7" style="text-align:center;color:var(--muted);padding:22px 8px;">No members matched your search.</td></tr>`;
     countEl.textContent = '0 members found';
     document.getElementById('member-detail-mount').innerHTML = '';
     return;
   }
 
   body.innerHTML = list.map(m => `
-    <tr class="result-row" onclick="showMemberDetail('${m.id}')">
-      <td>${m.id}</td><td>${m.name}</td><td>${m.cid}</td><td>${m.village}</td><td>${m.joined}</td>
-      <td><span class="pill ${m.status}">${m.status.charAt(0).toUpperCase()+m.status.slice(1)}</span></td>
+    <tr class="result-row">
+      <td onclick="showMemberDetail('${m.id}')">${m.id}</td>
+      <td onclick="showMemberDetail('${m.id}')">${m.name}</td>
+      <td onclick="showMemberDetail('${m.id}')">${m.cid}</td>
+      <td onclick="showMemberDetail('${m.id}')">${m.village}</td>
+      <td onclick="showMemberDetail('${m.id}')">${m.joined}</td>
+      <td onclick="showMemberDetail('${m.id}')"><span class="pill ${m.status}">${m.status.charAt(0).toUpperCase()+m.status.slice(1)}</span></td>
+      <td>${memberKycActionButtons(m)}</td>
     </tr>`).join('');
   countEl.textContent = `${list.length} member${list.length===1?'':'s'} found — click a row for full details`;
 
@@ -1880,6 +1972,53 @@ function clearMemberSearch(){
     if(el) el.value = '';
   });
   makeMemberSearch();
+}
+
+/* ---------- KYC approve / reject ---------- */
+function memberKycActionButtons(m){
+  if(m.status === 'pending'){
+    return `<div class="action-btn-group">
+      <button class="btn-sm btn-approve" onclick="approveMember('${m.id}')">Approve</button>
+      <button class="btn-sm btn-reject" onclick="rejectMember('${m.id}')">Reject</button>
+    </div>`;
+  }
+  if(m.status === 'rejected'){
+    return `<button class="btn-sm btn-approve" onclick="approveMember('${m.id}')">Approve</button>`;
+  }
+  return `<span class="btn-sm disabled" title="KYC already processed">Done</span>`;
+}
+
+async function approveMember(id){
+  const m = memberDatabase.find(x => x.id === id);
+  if(!m) return;
+  m.status = 'active';
+  try{
+    await apiPut(`/members/${id}`, { status:'active' });
+  }catch(err){
+    console.error('Failed to update member status on backend:', err);
+  }
+  addNotification('Member approved', `${m.name} (${m.id}) KYC approved`, 'members-info');
+  makeMemberSearch();
+  if(document.getElementById('member-detail-mount') && document.getElementById('member-detail-mount').innerHTML){
+    showMemberDetail(id);
+  }
+}
+
+async function rejectMember(id){
+  const m = memberDatabase.find(x => x.id === id);
+  if(!m) return;
+  if(!confirm(`Reject the KYC submission for ${m.name} (${m.id})? This member will need to resubmit their bio data.`)) return;
+  m.status = 'rejected';
+  try{
+    await apiPut(`/members/${id}`, { status:'rejected' });
+  }catch(err){
+    console.error('Failed to update member status on backend:', err);
+  }
+  addNotification('Member rejected', `${m.name} (${m.id}) KYC rejected`, 'members-info');
+  makeMemberSearch();
+  if(document.getElementById('member-detail-mount') && document.getElementById('member-detail-mount').innerHTML){
+    showMemberDetail(id);
+  }
 }
 
 /* ---------- full member detail card ---------- */
@@ -1914,6 +2053,19 @@ function showMemberDetail(id){
         </div>
         <button class="md-close" onclick="document.getElementById('member-detail-mount').innerHTML='';">Close ✕</button>
       </div>
+      ${m.status === 'pending' ? `
+      <div style="background:#fdf1de;border:1.5px solid #f0d8a8;border-radius:10px;padding:12px 16px;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;">
+        <div style="font-size:12.5px;color:#8a5a10;font-weight:600;">This member's KYC / bio data submission is awaiting review.</div>
+        <div class="action-btn-group">
+          <button class="btn-sm btn-approve" onclick="approveMember('${m.id}')">Approve KYC</button>
+          <button class="btn-sm btn-reject" onclick="rejectMember('${m.id}')">Reject KYC</button>
+        </div>
+      </div>` : ''}
+      ${m.status === 'rejected' ? `
+      <div style="background:#fbe6e6;border:1.5px solid #f0b8b8;border-radius:10px;padding:12px 16px;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;">
+        <div style="font-size:12.5px;color:#8a2b2b;font-weight:600;">This member's KYC submission was rejected.</div>
+        <button class="btn-sm btn-approve" onclick="approveMember('${m.id}')">Approve Instead</button>
+      </div>` : ''}
       <div class="md-grid">
         ${field('Date of Birth', m.dob)}
         ${field('Gender', m.gender)}
@@ -2588,8 +2740,8 @@ let contribDatabase = null; // lazily seeded
 function seedContribDatabase(){
   if(contribDatabase) return;
   contribDatabase = [
-    {date:'19 Jul 2026', cid:'10912011231', member:'Sonam Wangchuk', amount:'1,000', mode:'Cash', journal:'—', period:'2026', screenshot:'', status:'active'},
-    {date:'19 Jul 2026', cid:'10908022455', member:'Pema Lhamo', amount:'1,000', mode:'mBOB', journal:'RRN20260719004', period:'2026', screenshot:'', status:'pending'}
+    {id:1, date:'19 Jul 2026', cid:'10912011231', member:'Sonam Wangchuk', amount:'1,000', mode:'Cash', journal:'—', period:'2026', screenshot:'', status:'active'},
+    {id:2, date:'19 Jul 2026', cid:'10908022455', member:'Pema Lhamo', amount:'1,000', mode:'mBOB', journal:'RRN20260719004', period:'2026', screenshot:'', status:'pending'}
   ];
 }
 
@@ -2650,7 +2802,7 @@ function renderContribAddPage(mount, meta){
 
     <div class="ph-card" style="margin-top:16px;">
       <table class="ph-table">
-        <thead><tr><th>Date</th><th>CID</th><th>Member</th><th>Amount (Nu.)</th><th>Payment Mode</th><th>Journal No./RRN</th><th>Months/Year</th><th>Screenshot</th><th>Status</th></tr></thead>
+        <thead><tr><th>Date</th><th>CID</th><th>Member</th><th>Amount (Nu.)</th><th>Payment Mode</th><th>Journal No./RRN</th><th>Months/Year</th><th>Screenshot</th><th>Status</th><th>Action</th></tr></thead>
         <tbody id="contrib-table-body"></tbody>
       </table>
     </div>`;
@@ -2764,7 +2916,7 @@ function addContribEntry(){
   const amountLabel = Number(amount).toLocaleString('en-US');
 
   contribDatabase.unshift({
-    date:dateLabel, cid:m.cid, member:m.name, memberId:m.id, amount:amountLabel, mode:mode,
+    id: Date.now(), date:dateLabel, cid:m.cid, member:m.name, memberId:m.id, amount:amountLabel, mode:mode,
     journal:journal, period:period, screenshot:ctbPendingUrl, status:'pending'
   });
 
@@ -2796,8 +2948,49 @@ function renderContribTable(){
       : `<span class="btn-sm disabled" title="No screenshot uploaded">None</span>`;
     return `<tr><td>${c.date}</td><td>${c.cid}</td><td>${c.member}</td><td>${c.amount}</td><td>${c.mode}</td>
       <td>${c.journal}</td><td>${c.period}</td><td>${ss}</td>
-      <td><span class="pill ${c.status}">${c.status.charAt(0).toUpperCase()+c.status.slice(1)}</span></td></tr>`;
+      <td><span class="pill ${c.status}">${c.status.charAt(0).toUpperCase()+c.status.slice(1)}</span></td>
+      <td>${contribKycActionButtons(c)}</td></tr>`;
   }).join('');
+}
+
+function contribKycActionButtons(c){
+  if(c.status === 'pending'){
+    return `<div class="action-btn-group">
+      <button class="btn-sm btn-approve" onclick="approveContribution(${c.id})">Approve</button>
+      <button class="btn-sm btn-reject" onclick="rejectContribution(${c.id})">Reject</button>
+    </div>`;
+  }
+  if(c.status === 'rejected'){
+    return `<button class="btn-sm btn-approve" onclick="approveContribution(${c.id})">Approve</button>`;
+  }
+  return `<span class="btn-sm disabled" title="Already processed">Done</span>`;
+}
+
+async function approveContribution(id){
+  const c = contribDatabase.find(x => x.id === id);
+  if(!c) return;
+  c.status = 'active';
+  try{
+    await apiPut(`/contributions/${id}`, { status:'active' });
+  }catch(err){
+    console.error('Failed to update contribution status on backend:', err);
+  }
+  addNotification('Contribution approved', `Nu. ${c.amount} from ${c.member} approved`, 'contrib-add');
+  renderContribTable();
+}
+
+async function rejectContribution(id){
+  const c = contribDatabase.find(x => x.id === id);
+  if(!c) return;
+  if(!confirm(`Reject the Nu. ${c.amount} contribution from ${c.member}?`)) return;
+  c.status = 'rejected';
+  try{
+    await apiPut(`/contributions/${id}`, { status:'rejected' });
+  }catch(err){
+    console.error('Failed to update contribution status on backend:', err);
+  }
+  addNotification('Contribution rejected', `Nu. ${c.amount} from ${c.member} rejected`, 'contrib-add');
+  renderContribTable();
 }
 
 /* ===================== EDIT CONTRIBUTIONS (linked to Add Contributions data) ===================== */
@@ -2875,8 +3068,8 @@ function saveContribEdit(){
   renderContribEditTable();
 }
 
-/* ===================== REMOVE CONTRIBUTIONS (linked to Add Contributions data) ===================== */
-let contribRemoveIndex = null;
+/* ===================== VIEW CONTRIBUTIONS (linked to Add Contributions data) ===================== */
+let contribViewIndex = null;
 
 function renderContribRemovePage(mount, meta){
   seedContribDatabase();
@@ -2886,13 +3079,13 @@ function renderContribRemovePage(mount, meta){
     </div>
     <div id="contrib-remove-panel-mount"></div>
     <div class="ph-card">
-      <p style="color:var(--muted);font-size:12.5px;margin:0 0 12px;">Showing contributions submitted under <b>Add Contributions</b>. Click Remove on any row to take it off the record.</p>
+      <p style="color:var(--muted);font-size:12.5px;margin:0 0 12px;">Showing contributions submitted under <b>Add Contributions</b>. Click View on any row for full details.</p>
       <table class="ph-table">
         <thead><tr><th>Date</th><th>CID</th><th>Member</th><th>Amount (Nu.)</th><th>Payment Mode</th><th>Journal No./RRN</th><th>Months/Year</th><th>Status</th><th>Action</th></tr></thead>
         <tbody id="contrib-remove-table-body"></tbody>
       </table>
     </div>`;
-  contribRemoveIndex = null;
+  contribViewIndex = null;
   renderContribRemoveTable();
 }
 function renderContribRemoveTable(){
@@ -2907,37 +3100,43 @@ function renderContribRemoveTable(){
       <td>${c.date}</td><td>${c.cid}</td><td>${c.member}</td><td>${c.amount}</td><td>${c.mode}</td>
       <td>${c.journal}</td><td>${c.period}</td>
       <td><span class="pill ${c.status}">${c.status.charAt(0).toUpperCase()+c.status.slice(1)}</span></td>
-      <td><button class="btn-sm" style="background:#c0392b;" onclick="requestRemoveContrib(${i})">Remove</button></td>
+      <td><button class="btn-sm" onclick="viewContribDetail(${i})">View</button></td>
     </tr>`).join('');
 }
-function requestRemoveContrib(i){
-  contribRemoveIndex = i;
+function viewContribDetail(i){
+  contribViewIndex = i;
   const c = contribDatabase[i];
   const mount = document.getElementById('contrib-remove-panel-mount');
+  const ss = c.screenshot
+    ? `<a href="${c.screenshot}" target="_blank" class="btn-sm">
+         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+         View Screenshot</a>`
+    : `<span class="btn-sm disabled" title="No screenshot uploaded">None</span>`;
+  const field = (label, value) => `
+    <div class="md-item"><div class="md-label">${label}</div><div class="md-value">${value && String(value).length ? value : '—'}</div></div>`;
   mount.innerHTML = `
-    <div class="ph-card" style="margin-bottom:16px;border:1.5px solid #c0392b;">
-      <div class="upload-panel-title" style="color:#c0392b;">Confirm Removal — ${c.member} (${c.date}, Nu. ${c.amount})</div>
-      <div class="bio-field full" style="margin-bottom:14px;">
-        <label>Reason for Removal</label>
-        <textarea id="crm-reason" placeholder="e.g. Duplicate entry, wrong member, incorrect amount"></textarea>
+    <div class="ph-card member-detail-card" style="margin-bottom:16px;">
+      <div class="md-head">
+        <div>
+          <div class="md-head-name">${c.member}</div>
+          <div class="md-head-sub">CID ${c.cid} &nbsp;•&nbsp; <span class="pill ${c.status}">${c.status.charAt(0).toUpperCase()+c.status.slice(1)}</span></div>
+        </div>
+        <button class="md-close" onclick="closeContribDetail()">Close ✕</button>
       </div>
-      <div class="bio-form-actions">
-        <button type="button" class="btn-outline" onclick="cancelRemoveContrib()">Cancel</button>
-        <button type="button" class="btn-primary" style="background:linear-gradient(135deg,#c0392b,#7a231b);" onclick="confirmRemoveContrib()">Confirm Remove</button>
+      <div class="md-grid">
+        ${field('Date', c.date)}
+        ${field('Amount (Nu.)', c.amount)}
+        ${field('Payment Mode', c.mode)}
+        ${field('Journal No. / RRN', c.journal)}
+        ${field('Months / Year', c.period)}
       </div>
+      <div style="margin-top:12px;">${ss}</div>
     </div>`;
   mount.scrollIntoView({behavior:'smooth', block:'nearest'});
 }
-function cancelRemoveContrib(){
-  contribRemoveIndex = null;
+function closeContribDetail(){
+  contribViewIndex = null;
   document.getElementById('contrib-remove-panel-mount').innerHTML = '';
-}
-function confirmRemoveContrib(){
-  if(contribRemoveIndex === null) return;
-  contribDatabase.splice(contribRemoveIndex, 1);
-  contribRemoveIndex = null;
-  document.getElementById('contrib-remove-panel-mount').innerHTML = '';
-  renderContribRemoveTable();
 }
 
 /* ===================== INDIVIDUAL STATEMENT — search by CID / Member ID ===================== */
@@ -3437,11 +3636,14 @@ function downloadReportPDF(reportName){
   doc.save(`BPT-${safeName}-${fileDate}.pdf`);
 }
 
-/* ===================== MANAGEMENT — committee profiles ===================== */
+/* ===================== MANAGEMENT — committee org chart ===================== */
+/* Each entry: {id, name, role, contact, photo, reportsTo}
+   reportsTo === null  -> top of the chart (e.g. the Head)
+   reportsTo === <id>  -> reports to that management member, forming the tree */
 let managementDatabase = [
-  {name:'Sonam Wangchuk', role:'Chairperson', contact:'17111222', photo:''},
-  {name:'Dechen Wangmo', role:'Secretary', contact:'17222333', photo:''},
-  {name:'Karma Tenzin', role:'Treasurer', contact:'17333444', photo:''},
+  {id:1, name:'Sonam Wangchuk', role:'Chairperson', contact:'17111222', photo:'', reportsTo:null},
+  {id:2, name:'Dechen Wangmo', role:'Secretary', contact:'17222333', photo:'', reportsTo:1},
+  {id:3, name:'Karma Tenzin', role:'Treasurer', contact:'17333444', photo:'', reportsTo:1},
 ];
 let mgmtPhotoDataUrl = '';
 
@@ -3466,9 +3668,12 @@ function renderManagementPage(mount, meta){
       <div class="bio-form-grid">
         <div class="bio-field"><label>Full Name *</label><input type="text" id="mgmt-name" placeholder="e.g. Sonam Wangchuk"></div>
         <div class="bio-field"><label>Designation *</label>
-          <select id="mgmt-role"><option>Chairperson</option><option>Vice Chairperson</option><option>Secretary</option><option>Treasurer</option><option>Committee Member</option></select>
+          <select id="mgmt-role"><option>Chairperson</option><option>Vice Chairperson</option><option>Secretary</option><option>Treasurer</option><option>Manager</option><option>Advisor</option><option>Committee Member</option></select>
         </div>
         <div class="bio-field"><label>Contact Number</label><input type="tel" id="mgmt-contact" placeholder="17xxxxxx"></div>
+        <div class="bio-field"><label>Reports To</label>
+          <select id="mgmt-reportsto"><option value="">— Top of chart (no manager) —</option></select>
+        </div>
       </div>
       <div class="bio-form-actions">
         <button type="button" class="btn-primary" onclick="addManagementMember()">
@@ -3479,10 +3684,18 @@ function renderManagementPage(mount, meta){
     </div>
 
     <div class="ph-card" style="margin-top:16px;">
-      <div class="upload-panel-title">Current Management</div>
-      <div class="mgmt-grid" id="mgmt-grid"></div>
+      <div class="upload-panel-title">Current Management Structure</div>
+      <p style="color:var(--muted);font-size:12.5px;margin:0 0 4px;">Click the ✕ on any card to remove that person — anyone reporting to them moves up to their manager automatically.</p>
+      <div class="org-chart-scroll"><div id="mgmt-grid"></div></div>
     </div>`;
+  populateMgmtReportsToOptions();
   renderManagementGrid();
+}
+function populateMgmtReportsToOptions(){
+  const sel = document.getElementById('mgmt-reportsto');
+  if(!sel) return;
+  const options = managementDatabase.map(p => `<option value="${p.id}">${p.name} (${p.role})</option>`).join('');
+  sel.innerHTML = `<option value="">— Top of chart (no manager) —</option>${options}`;
 }
 function handleMgmtPhotoChange(e){
   const file = e.target.files && e.target.files[0];
@@ -3500,8 +3713,10 @@ function addManagementMember(){
   const name = document.getElementById('mgmt-name').value.trim();
   const role = document.getElementById('mgmt-role').value;
   const contact = document.getElementById('mgmt-contact').value.trim();
+  const reportsToRaw = document.getElementById('mgmt-reportsto').value;
+  const reportsTo = reportsToRaw ? Number(reportsToRaw) || reportsToRaw : null;
   if(!name) return;
-  const newEntry = { name, role, contact, photo: mgmtPhotoDataUrl || '' };
+  const newEntry = { id: Date.now(), name, role, contact, photo: mgmtPhotoDataUrl || '', reportsTo };
   managementDatabase.push(newEntry);
   apiPost('/management', newEntry).catch(err => console.error('Failed to save management member to backend:', err));
   addNotification('Management updated', `${name} added as ${role}`, 'management');
@@ -3513,21 +3728,60 @@ function addManagementMember(){
     circle.innerHTML = `<span class="ph-placeholder-txt">Add<br>Photo</span>
       <input type="file" id="mgmt-photo-input" accept="image/jpeg,image/png,image/jpg" style="display:none;" onchange="handleMgmtPhotoChange(event)">`;
   }
+  populateMgmtReportsToOptions();
   renderManagementGrid();
+}
+
+async function removeManagementMember(id){
+  const p = managementDatabase.find(x => x.id === id);
+  if(!p) return;
+  if(!confirm(`Remove ${p.name} (${p.role}) from the management structure? Anyone reporting to them will move up to their manager.`)) return;
+
+  // Reparent anyone who reported to this person, so nobody is orphaned in the tree.
+  managementDatabase.forEach(child => {
+    if(child.reportsTo === id) child.reportsTo = p.reportsTo;
+  });
+  managementDatabase = managementDatabase.filter(x => x.id !== id);
+
+  try{
+    await apiDelete(`/management/${id}`);
+  }catch(err){
+    console.error('Failed to remove management member on backend:', err);
+  }
+  addNotification('Management updated', `${p.name} removed from management`, 'management');
+  populateMgmtReportsToOptions();
+  renderManagementGrid();
+}
+
+/* ---------- org chart tree rendering ---------- */
+function mgmtNodeHtml(p, isHead){
+  const avatar = p.photo ? `<img src="${p.photo}" alt="${p.name}">` : (p.name||'?').trim().charAt(0).toUpperCase();
+  return `
+    <div class="org-node${isHead ? ' head-node' : ''}">
+      <button class="mc-remove" onclick="removeManagementMember(${JSON.stringify(p.id)})" title="Remove ${p.name}">✕</button>
+      <div class="md-avatar">${avatar}</div>
+      <div class="mc-name">${p.name}</div>
+      <div class="mc-role">${p.role}</div>
+      <div class="mc-contact">${p.contact ? p.contact : '—'}</div>
+    </div>`;
+}
+function buildMgmtTreeHtml(parentId, isTop){
+  const children = managementDatabase.filter(p => p.reportsTo === parentId || (parentId === null && p.reportsTo == null));
+  if(children.length === 0) return '';
+  return `<ul${isTop ? ' class="org-tree"' : ''}>${children.map(p => `
+    <li>
+      ${mgmtNodeHtml(p, isTop)}
+      ${buildMgmtTreeHtml(p.id, false)}
+    </li>`).join('')}</ul>`;
 }
 function renderManagementGrid(){
   const grid = document.getElementById('mgmt-grid');
   if(!grid) return;
-  grid.innerHTML = managementDatabase.map(p => {
-    const avatar = p.photo ? `<img src="${p.photo}" alt="${p.name}">` : (p.name||'?').trim().charAt(0).toUpperCase();
-    return `
-      <div class="mgmt-card">
-        <div class="md-avatar">${avatar}</div>
-        <div class="mc-name">${p.name}</div>
-        <div class="mc-role">${p.role}</div>
-        <div class="mc-contact">${p.contact ? p.contact : '—'}</div>
-      </div>`;
-  }).join('');
+  if(managementDatabase.length === 0){
+    grid.innerHTML = `<div class="org-empty-note">No management members added yet.</div>`;
+    return;
+  }
+  grid.innerHTML = buildMgmtTreeHtml(null, true);
 }
 
 /* ===================== VISION & MISSION ===================== */
@@ -3809,7 +4063,8 @@ function renderAdminPhotosPage(mount, meta){
 
     <div class="ph-card" style="margin-top:16px;">
       <div class="upload-panel-title">Current Banner Photos</div>
-      <div class="photo-grid" id="hero-photo-grid"></div>
+      <p style="color:var(--muted);font-size:12.5px;margin:0 0 4px;">Photos scroll automatically like a marquee — hover to pause.</p>
+      <div class="marquee-viewport" id="hero-photo-grid"></div>
     </div>`;
   renderHeroFileList();
   renderHeroPhotoGrid();
@@ -3872,18 +4127,37 @@ function removeHeroPhoto(id){
   renderHeroPhotoGrid();
   renderHeroCarousel();
 }
-function renderHeroPhotoGrid(){
-  const grid = document.getElementById('hero-photo-grid');
-  if(!grid) return;
-  grid.innerHTML = heroPhotoDatabase.map(p => `
+function heroPhotoCardHtml(p, interactive){
+  const removeBtn = interactive
+    ? `<button class="btn-sm" style="background:#c0392b;" onclick="removeHeroPhoto(${p.id})" ${heroPhotoDatabase.length<=1?'disabled title="At least one banner photo is required"':''}>Remove</button>`
+    : '';
+  return `
     <div class="photo-card">
       <img class="pc-thumb" src="${p.url}" alt="${p.caption}">
       <div class="pc-body">
         <div class="pc-caption">${p.caption}</div>
         <div class="pc-meta">${[p.location, p.date].filter(Boolean).join(' • ') || '—'}</div>
-        <button class="btn-sm" style="background:#c0392b;" onclick="removeHeroPhoto(${p.id})" ${heroPhotoDatabase.length<=1?'disabled title="At least one banner photo is required"':''}>Remove</button>
+        ${removeBtn}
       </div>
-    </div>`).join('');
+    </div>`;
+}
+function renderHeroPhotoGrid(){
+  const grid = document.getElementById('hero-photo-grid');
+  if(!grid) return;
+  const cardsInteractive = heroPhotoDatabase.map(p => heroPhotoCardHtml(p, true)).join('');
+  // The auto-scroll marquee needs the strip duplicated for a seamless loop.
+  // Only the first copy has working Remove buttons — the second is a
+  // decorative, non-interactive clone used purely to fill the loop.
+  if(heroPhotoDatabase.length <= 1){
+    grid.innerHTML = `<div class="marquee-content" style="animation:none;">${cardsInteractive}</div>`;
+    return;
+  }
+  const cardsDecorative = heroPhotoDatabase.map(p => heroPhotoCardHtml(p, false)).join('');
+  grid.innerHTML = `
+    <div class="marquee-track">
+      <div class="marquee-content">${cardsInteractive}</div>
+      <div class="marquee-content" aria-hidden="true">${cardsDecorative}</div>
+    </div>`;
 }
 
 /* ---- dashboard hero carousel — driven by heroPhotoDatabase ---- */
@@ -3983,8 +4257,18 @@ function renderAdminCredentialsPage(mount, meta){
       <div class="bio-form-section">Login Credentials</div>
       <div class="bio-form-grid">
         <div class="bio-field"><label>Username *</label><input type="text" id="cred-username" placeholder="auto-suggested from name"></div>
+        <div class="bio-field">
+          <label>Password</label>
+          <div class="field-input" style="border:1.5px solid var(--line);border-radius:10px;padding:10px 12px;">
+            <input type="password" id="cred-password" placeholder="Leave blank to auto-generate">
+            <button type="button" onclick="toggleCredPasswordVisibility()" title="Show/Hide" style="background:none;border:none;color:var(--muted);display:flex;">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+            </button>
+          </div>
+          <button type="button" class="btn-outline" style="margin-top:6px;font-size:12px;padding:6px 10px;" onclick="generateCredPassword()">Generate Random Password</button>
+        </div>
       </div>
-      <p style="color:var(--muted);font-size:12px;margin:2px 0 0;">A secure random password is generated by the server when you issue the login — it's shown once below, then never displayed again.</p>
+      <p style="color:var(--muted);font-size:12px;margin:2px 0 0;">Set a password above, or leave it blank and a secure random password will be generated when you issue the login — it's shown once below, then never displayed again.</p>
       <div id="cred-issue-msg" style="display:none;font-size:12.5px;font-weight:700;margin-top:10px;"></div>
       <div class="bio-form-actions">
         <button type="button" class="btn-primary" onclick="issueCredential()">
@@ -4065,6 +4349,20 @@ function suggestCredUsername(){
   if(name) usernameEl.value = slugifyUsername(name);
 }
 
+function generateCredPassword(){
+  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789!@#$%';
+  let pw = '';
+  for(let i=0;i<12;i++) pw += chars.charAt(Math.floor(Math.random()*chars.length));
+  const el = document.getElementById('cred-password');
+  if(el){ el.value = pw; el.type = 'text'; }
+}
+
+function toggleCredPasswordVisibility(){
+  const el = document.getElementById('cred-password');
+  if(!el) return;
+  el.type = el.type === 'password' ? 'text' : 'password';
+}
+
 function showCredMsg(text, ok){
   const msg = document.getElementById('cred-issue-msg');
   if(!msg) return;
@@ -4098,11 +4396,20 @@ async function issueCredential(){
   }
 
   const username = document.getElementById('cred-username').value.trim() || slugifyUsername(name);
+  const passwordInput = document.getElementById('cred-password');
+  const password = passwordInput ? passwordInput.value.trim() : '';
+  if(password && password.length < 6){
+    showCredMsg('Password must be at least 6 characters.', false);
+    return;
+  }
 
   try{
-    const created = await apiPost('/credentials', { name, type, refId, username });
+    const payload = { name, type, refId, username };
+    if(password) payload.password = password;
+    const created = await apiPost('/credentials', payload);
     credentialsDatabase.unshift({ ...created, reveal:true });
-    showCredMsg(`Login issued. Password (shown once): ${created.password} — copy it now, it can't be retrieved again.`, true);
+    const setBy = password ? 'set by you' : 'auto-generated';
+    showCredMsg(`Login issued. Password (${setBy}, shown once): ${created.password} — copy it now, it can't be retrieved again.`, true);
     addNotification('Login credentials issued', `${type} account created for ${name} (${username})`, 'admin-credentials');
   }catch(err){
     showCredMsg(err.message || 'Failed to issue login.', false);
@@ -4110,6 +4417,7 @@ async function issueCredential(){
   }
 
   document.getElementById('cred-username').value = '';
+  if(passwordInput) passwordInput.value = '';
   if(credRecipientType === 'member'){
     document.getElementById('cred-cid').value = '';
     credLookupMember = null;
