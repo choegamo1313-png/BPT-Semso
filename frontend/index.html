@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<script>window.BPT_API_BASE = 'https://bpt-semso-backend.onrender.com/api';</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Bikhar Phenday Tshokpa Management System</title>
@@ -1174,6 +1175,7 @@ function doLogin(){
     return;
   }
   if(loginBtn) loginBtn.disabled = true;
+  if(errorEl){ errorEl.textContent = `Connecting to ${API_BASE} …`; errorEl.classList.add('show'); errorEl.style.color = ''; }
 
   fetch(`${API_BASE}/auth/login`, {
     method:'POST', headers:{'Content-Type':'application/json'},
@@ -1193,7 +1195,19 @@ function doLogin(){
     });
   })
   .catch(err => {
-    if(errorEl){ errorEl.textContent = err.message || 'Incorrect username or password. Please try again.'; errorEl.classList.add('show'); }
+    if(!errorEl){ if(loginBtn) loginBtn.disabled = false; return; }
+    // TypeError with no useful message = the browser never got a response at all
+    // (backend asleep/down, wrong URL, or CORS rejected it before it reached fetch's normal error handling).
+    if(err instanceof TypeError){
+      errorEl.innerHTML = `Could not reach the server at <code>${API_BASE}</code>.<br>` +
+        `This means either: the backend is still waking up (free tier — wait 30-60s and try again), ` +
+        `the URL is wrong, or the backend's FRONTEND_ORIGINS doesn't include this site's exact URL (CORS). ` +
+        `Open browser dev tools (F12) → Console for the specific reason.`;
+      errorEl.style.color = '#c0392b';
+    } else {
+      errorEl.textContent = err.message || 'Incorrect username or password. Please try again.';
+    }
+    errorEl.classList.add('show');
   })
   .finally(() => { if(loginBtn) loginBtn.disabled = false; });
 }
@@ -1342,7 +1356,7 @@ let memberDatabase = [];
    localhost URL below with your deployed backend's URL + "/api"
    e.g. 'https://bpt-backend.onrender.com/api'
    ============================================================ */
-const API_BASE = window.BPT_API_BASE || 'https://YOUR-REAL-BACKEND-URL.onrender.com/api';
+const API_BASE = window.BPT_API_BASE || 'http://localhost:4000/api';
 
 let authToken = null; // set on login, cleared on logout — never written to localStorage in this build
 
