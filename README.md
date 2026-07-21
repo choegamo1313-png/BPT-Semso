@@ -1,110 +1,141 @@
-# Bikhar Phenday Tshokpa Management System — Backend + Data
+# Bikhar Phenday Tshokpa Management System — Backend
 
-This package adds a **real backend API** and **realistic sample data** to the
-dashboard you built (`bikhar-phenday-tshokpa-dashboard.html`). The frontend now
-fetches live data from the backend instead of using hardcoded arrays.
+A real REST API (Node.js + Express) backed by a **permanent, hosted Postgres
+database**, plus the dashboard frontend (`index.html`) wired to call it.
 
-## What's included
+## Files
 
 ```
-bpt-system/
-├── backend/
-│   ├── server.js          ← REST API (pure Node.js, no npm install needed)
-│   ├── generate-seed.js   ← regenerates data/db.json with fresh sample data
-│   └── data/db.json       ← the "database" (JSON file), auto-created/updated
-└── frontend/
-    └── index.html         ← your dashboard, wired to call the backend
+server.js            ← starts the API, mounts every route
+db.js                 ← connects to Postgres, creates tables, seeds the admin account
+authMiddleware.js     ← JWT verification, admin/edit-access checks
+auth.js               ← login, admin password change
+credentials.js        ← admin: issue/reset/revoke member & staff logins
+dashboard.js          ← dashboard stat cards
+assets.js             ← assets (purchases / replacements / categories)
+resource.js           ← generic list/create routes reused by most resources
+seed.js               ← inserts sample data (only into empty tables)
+package.json
+.env.example          ← copy to .env and fill in
+index.html             ← the frontend (calls the API at window.BPT_API_BASE)
 ```
 
-The backend has **zero external dependencies** — it only uses Node's built-in
-`http` and `fs` modules, so `npm install` isn't required and it will run
-anywhere Node.js is installed. Data is stored in `backend/data/db.json` and
-updated in place whenever a record is added through the UI (new member,
-contribution, management member, etc.) — so it persists across restarts.
+## Why this stores data permanently now
 
-## How to run it
+Data lives in a **hosted Postgres database**, not a file on the server's
+local disk. That distinction matters if you deploy the backend to a
+platform like Render: on Render's free web-service tier, the local
+filesystem is wiped every time the service restarts or redeploys (which
+happens automatically after ~15 minutes of inactivity). A file-based
+database (a `.sqlite` file, a JSON file) sitting on that disk gets reset
+right along with it. A hosted Postgres database runs on its own separate
+server, so it keeps every record no matter how many times your backend
+process restarts, sleeps, or redeploys — which is what "real" permanent
+storage means in practice.
 
-**1. Start the backend** (from the `backend/` folder):
+## 1. Get a free permanent database
+
+Pick one (both have a free tier that doesn't expire, unlike Render's own
+free Postgres which auto-deletes after 30 days):
+
+- **[Neon](https://neon.tech)** — create a project, copy the connection
+  string shown on the dashboard (starts with `postgresql://`).
+- **[Supabase](https://supabase.com)** — create a project, go to
+  Project Settings → Database → Connection string → "URI".
+
+Either way you'll get a string like:
+```
+postgresql://user:password@host/dbname?sslmode=require
+```
+
+## 2. Configure the backend
 
 ```bash
-node server.js
+cp .env.example .env
 ```
 
-You should see: `BPT backend API running on http://localhost:4000`
+Fill in `.env`:
+- `DATABASE_URL` — the connection string from step 1.
+- `JWT_SECRET` — a long random string (`node -e "console.log(require('crypto').randomBytes(48).toString('hex'))"`).
+- `ADMIN_DEFAULT_PASSWORD` — password for the first-run admin account (username `admin`). Change it after first login via Administrator → Login Settings.
+- `FRONTEND_ORIGINS` — comma-separated list of origins allowed to call the API.
 
-**2. Serve the frontend** (from the `frontend/` folder, in a second terminal):
+## 3. Run it
+
+```bash
+npm install
+npm start
+```
+
+You should see `BPT backend listening on port 4000`. On first run it
+creates all tables in your Postgres database and seeds a default admin
+account. Optionally load sample data:
+
+```bash
+npm run seed
+```
+
+## 4. Serve the frontend
+
+`index.html` already points at a deployed backend
+(`window.BPT_API_BASE` near the top of the file). For local testing,
+change that to `http://localhost:4000/api`, then open the file or serve
+it with:
 
 ```bash
 python3 -m http.server 8080
-# or: npx serve .
 ```
 
-Then open **http://localhost:8080/index.html** in your browser and log in
-(the login screen is cosmetic — any input works). The dashboard will fetch
-live data from `http://localhost:4000/api` on login.
+## Deploying (e.g. to Render)
 
-> If you serve the frontend from a different host/port than `localhost:8080`,
-> or the backend from something other than `localhost:4000`, set
-> `window.BPT_API_BASE = 'http://your-backend-host:4000/api';` in a
-> `<script>` tag before the dashboard's main script runs.
-
-## The data
-
-`generate-seed.js` produced fictional but realistic sample data:
-
-- **62 members** across 10 dzongkhags (Thimphu, Paro, Punakha, Wangdue
-  Phodrang, Chukha, Samtse, Sarpang, Mongar, Trashigang, Bumthang) with full
-  bio-data (CID, DOB, occupation, emergency contact, etc.)
-- **156 contribution records** tied to real member IDs, with payment modes
-  (mBOB, Mpay, DrukPay, ePay, Tpay, DK, Cash)
-- **25 Semso claims** — 14 medical, 5 death, 6 other (disability, fire
-  damage, natural calamity, education support)
-- **Asset register** (office equipment, vehicles, land & building,
-  furniture), recent purchases and replacements
-- **Staff and other expense** records
-- **5-person management committee**
-- **Forms and reports** registry
-
-Dashboard stat cards, statements (individual & overall), and every
-placeholder table (contributions, semso, assets, expenses, forms, reports)
-now pull from this same dataset — so numbers are internally consistent
-(e.g. Overall Statement totals match the sum of individual contributions).
-
-To regenerate a fresh random dataset at any time:
-
-```bash
-cd backend && node generate-seed.js
-```
+1. Push this backend to a GitHub repo, create a **Web Service** on Render
+   pointing at it (build command `npm install`, start command
+   `node server.js`).
+2. In the service's Environment settings, add `DATABASE_URL`,
+   `JWT_SECRET`, `ADMIN_DEFAULT_PASSWORD`, and `FRONTEND_ORIGINS` (same
+   values as your `.env`).
+3. No disk needed — the database lives outside Render entirely, so the
+   free web-service tier is fine and your data survives every
+   restart/redeploy.
+4. Point `window.BPT_API_BASE` in `index.html` at your Render service's
+   URL (`https://your-service.onrender.com/api`) and deploy/serve the
+   frontend wherever you like (Render Static Site, GitHub Pages, etc.).
 
 ## API endpoints
 
 | Method | Path | Description |
 |---|---|---|
+| POST | `/api/auth/login` | Log in, get a session token |
+| POST | `/api/auth/admin` | Admin: change own username/password |
+| GET/POST | `/api/credentials` | Admin: list / issue member & staff logins |
+| POST | `/api/credentials/authorize` | Admin: grant/revoke edit access |
+| POST | `/api/credentials/status` | Admin: activate/revoke a login |
+| POST | `/api/credentials/reset` | Admin: reset a login's password |
 | GET | `/api/dashboard/stats` | Dashboard stat cards |
-| GET/POST | `/api/members` | List / add members (`?q=`, `?status=`, `?dzongkhag=` filters) |
-| GET/PUT | `/api/members/:id` | Get / update one member |
-| GET/POST | `/api/contributions` | List / add contributions |
-| PUT/DELETE | `/api/contributions/:id` | Edit / remove a contribution |
-| GET/POST | `/api/semso/:type` | `type` = `medical` \| `death` \| `other` |
-| GET | `/api/assets` | All asset data |
-| GET/POST | `/api/assets/purchases` | Purchases |
-| GET/POST | `/api/assets/replacements` | Replacements |
-| GET/POST | `/api/expenses/:type` | `type` = `staff` \| `other` |
+| GET/POST | `/api/members` | List / add members |
 | GET/POST | `/api/management` | Committee members |
-| GET | `/api/forms` | Forms registry |
-| GET | `/api/reports` | Reports registry |
-| GET | `/api/statements/individual` | Per-member statement |
-| GET | `/api/statements/overall` | Organization-wide statement |
+| GET/POST | `/api/contributions` | Contributions |
+| GET/POST | `/api/semso/:type` | `type` = `medical` \| `death` \| `other` |
+| GET | `/api/assets` | Purchases, replacements, categories in one call |
+| POST | `/api/assets/purchases` \| `/replacements` \| `/categories` | Add an asset record |
+| GET/POST | `/api/expenses/:type` | `type` = `staff` \| `other` |
+| GET/POST | `/api/forms` | Forms registry |
+| GET/POST | `/api/reports` | Reports registry |
+| GET/POST | `/api/statements/individual` | Per-member statement |
+| GET/POST | `/api/statements/overall` | Organization-wide statement |
+| GET/POST | `/api/vision-mission`, `/api/announcements`, `/api/photos` | Misc content |
 
-## Notes / next steps
+Every route except `/api/health` and `/api/auth/login` requires a
+`Authorization: Bearer <token>` header from a successful login. Routes
+that create records additionally require the account to be an admin or
+an explicitly authorized member/staff account (enforced server-side in
+`authMiddleware.js`, not just hidden in the UI).
 
-- This is an in-memory-JSON-file "database" — fine for a demo or single-user
-  setup, but for real production use with multiple concurrent users, swap
-  `backend/data/db.json` for a proper database (Postgres, SQLite via
-  `better-sqlite3`, etc.) — the API surface in `server.js` is written so
-  that swap only touches the `readDB`/`writeDB` functions.
-- There's no authentication on the API yet — the login screen in the
-  frontend is cosmetic. Add real auth (e.g. sessions or JWT) before
-  exposing this beyond localhost.
-- All names, CIDs, and figures are fictional/generated — replace with your
-  Tshokpa's actual member records when you're ready to go live.
+## Notes
+
+- All names, CIDs, and figures in `seed.js` are fictional/generated —
+  replace with your Tshokpa's actual member records when you're ready to
+  go live, and skip `npm run seed` in production.
+- Passwords are hashed with bcrypt and never stored or returned in plain
+  text (except once, at creation/reset time, so the admin can hand it to
+  the person it belongs to).
